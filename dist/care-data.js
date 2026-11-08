@@ -33,3 +33,13 @@ fil:{
  ['Pangangalaga sa daanan ng hangin','Talakayin ang gamit o pamamaraan para suportahan ang paghinga. Sabihin kung dating mahirap maglagay ng tubo sa paghinga.'],['Kumot na pampainit','Tumutulong panatilihin ang temperatura. Talakayin ang pagpapainit kung nag-aalala sa lamig.'],['Pagsubaybay sa lalim ng anesthesia','May dagdag na impormasyon mula sa sensor sa noo. Hindi nito magagarantiya ang pag-iwas sa paggising habang may anesthesia.'],['Nerve block','Gamot na pampamanhid malapit sa nerbiyos para sa isang bahagi. Nakabatay sa pamamaraan at kalusugan ang kaangkupan.'],['High-flow oxygen','Oxygen sa espesyal na tubo sa ilong. Susuriin ng pangkat kung kailangan at angkop.'],['Paracetamol | iniksiyong gamot sa sakit','Maaaring bahagi ng plano sa sakit. Suriin ang atay, ibang gamot na may parehong sangkap, at allergy.'],['Dynastat | iniksiyong gamot sa sakit','Gamot sa pamamaga at sakit. Suriin ang bato, puso, pagdurugo sa tiyan, pagbubuntis at allergy.'],['Naldebain | matagalang iniksiyon sa sakit','Para sa planong sakit pagkatapos ng operasyon na sinuri ng doktor at inihanda bago ang operasyon. Suriin ang paghinga, atay, bato at ibang gamot sa sakit.'],['Ondansetron | gamot sa pagsusuka','Para maiwasan o gamutin ang pagduduwal at pagsusuka. Sabihin ang problema sa tibok ng puso, atay at ibang gamot.']]
 }
 };
+
+const EQUIPMENT_LABELS={
+ 'zh-Hant':['麻醉機','保溫毯機器'],
+ en:['Anesthesia machine','Warming unit'],
+ id:['Mesin anestesi','Mesin penghangat'],
+ th:['เครื่องดมยาสลบ','เครื่องทำความอุ่น'],
+ vi:['Máy gây mê','Máy làm ấm'],
+ fil:['Makina ng anesthesia','Makinang pampainit']
+};
+for(const [code,labels] of Object.entries(EQUIPMENT_LABELS))Object.assign(CARE_I18N[code],{machine:labels[0],warmingMachine:labels[1]});
