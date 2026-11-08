@@ -99,19 +99,27 @@ function warmingMachineSVG(c){return `<g id="scene-warming" data-option="warming
 function breathingConnectionSVG(c){return `<g id="scene-breathing-connection">
 <!-- Corrugated limbs run from the machine's side ports to the patient-end Y-piece. -->
 <g id="scene-breathing-circuit" fill="none" stroke-linecap="round">
-<path d="M710 474C654 474 666 355 632 276S551 202 525 223" stroke="#77a799" stroke-width="15"/>
-<path d="M710 474C654 474 666 355 632 276S551 202 525 223" stroke="#e4eee3" stroke-width="11" stroke-dasharray="2 5"/>
-<path d="M710 495C641 495 650 366 618 290S555 227 525 243" stroke="#77a799" stroke-width="15"/>
-<path d="M710 495C641 495 650 366 618 290S555 227 525 243" stroke="#e4eee3" stroke-width="11" stroke-dasharray="2 5"/>
+<path d="M710 474C654 474 666 355 632 276S551 202 525 214" stroke="#77a799" stroke-width="15"/>
+<path d="M710 474C654 474 666 355 632 276S551 202 525 214" stroke="#e4eee3" stroke-width="11" stroke-dasharray="2 5"/>
+<path d="M710 495C641 495 650 366 618 290S555 227 525 234" stroke="#77a799" stroke-width="15"/>
+<path d="M710 495C641 495 650 366 618 290S555 227 525 234" stroke="#e4eee3" stroke-width="11" stroke-dasharray="2 5"/>
 </g>
 <g id="scene-machine-ports"><circle cx="710" cy="474" r="9" fill="#d3e5d9" stroke="#568b7d" stroke-width="3"/><circle cx="710" cy="495" r="9" fill="#d3e5d9" stroke="#568b7d" stroke-width="3"/><path d="M703 474h12m-12 21h12" stroke="#6c9d8e" stroke-width="4"/></g>
 <g id="scene-air-mask">
-<!-- The clear anatomical mask seals over both nose and mouth. -->
-<path d="M446 236C434 236 424 250 424 264Q425 281 447 283Q471 280 471 264C470 248 458 236 446 236Z" fill="#c6e1d7" fill-opacity=".65" stroke="#78a394" stroke-width="5"/>
-<path d="M446 242C437 243 430 254 430 265Q431 276 447 277Q464 275 465 264C463 252 455 242 446 242Z" fill="#eff7ed" fill-opacity=".55" stroke="#bdd5c8" stroke-width="2"/>
-<!-- A right-angle elbow changes direction before the Y connector. -->
-<g id="scene-right-angle"><path d="M451 260V245q0-12 12-12h37" fill="none" stroke="#688e9c" stroke-width="15" stroke-linecap="round"/><path d="M451 260V245q0-12 12-12h37" fill="none" stroke="#d3e2e1" stroke-width="9" stroke-linecap="round"/><circle cx="451" cy="262" r="8" fill="#e7f1ea" stroke="#719b8e" stroke-width="2"/></g>
-<g id="scene-y-piece"><path d="M498 233h10l17-10m-17 10l17 10" fill="none" stroke="#769f91" stroke-width="13" stroke-linecap="round"/><path d="M498 233h10l17-10m-17 10l17 10" fill="none" stroke="#d9e9dd" stroke-width="8" stroke-linecap="round"/></g>
-<rect id="scene-mask-connector" x="444" y="250" width="14" height="18" rx="5" fill="#f1f7ed" fill-opacity=".7" stroke="#719b8e" stroke-width="2"/>
+<!-- A clear, raised dome with a soft inflatable seal rests over nose and mouth. -->
+<g id="scene-mask-cushion">
+<path d="M446 244C434 245 422 258 420 270Q418 286 447 289Q477 285 476 270C474 256 460 244 446 244Z" fill="#dcece8" fill-opacity=".25" stroke="#9fbdb8" stroke-width="2"/>
+<path d="M446 247C435 248 425 259 423 270Q423 283 447 286Q473 282 473 270C471 258 458 247 446 247Z" fill="none" stroke="#eff9f3" stroke-width="7" stroke-opacity=".9"/>
+<path d="M446 250C436 251 429 260 428 270Q428 279 447 281Q468 279 468 270C466 261 457 250 446 250Z" fill="none" stroke="#bbd5d0" stroke-width="1.3"/>
+</g>
+<g id="scene-mask-dome">
+<path d="M425 271C428 256 447 244 457 246Q464 246 469 257L473 271Q468 282 447 284Q431 281 425 271Z" fill="#e8f4f1" fill-opacity=".36" stroke="#a6c3c0" stroke-width="1.8"/>
+<path d="M428 272Q435 255 455 249M432 275q-2-10 8-16" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-opacity=".85"/>
+<path d="M431 275Q448 281 465 274" fill="none" stroke="#d0e6df" stroke-width="1.5"/>
+</g>
+<!-- The mask neck rises from the dome; the 90-degree elbow stays above it. -->
+<g id="scene-mask-connector"><ellipse cx="461" cy="257" rx="9" ry="4.5" fill="#e7f3ec" fill-opacity=".8" stroke="#8fafaa" stroke-width="1.6"/><rect x="454" y="240" width="14" height="17" rx="3" fill="#e7f1e9" fill-opacity=".65" stroke="#8fb3aa" stroke-width="1.6"/><path d="M458 244v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="461" cy="240" rx="7" ry="3" fill="#d1e5d8" stroke="#8fb3aa" stroke-width="1.4"/></g>
+<g id="scene-right-angle"><path d="M461 240V236q0-12 12-12h27" fill="none" stroke="#9bb5ae" stroke-width="14" stroke-linecap="round"/><path d="M461 240V236q0-12 12-12h27" fill="none" stroke="#e2eee4" stroke-width="10" stroke-linecap="round"/><path d="M464 236q0-9 10-9h18" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".9"/></g>
+<g id="scene-y-piece"><path d="M498 224h10l17-10m-17 10l17 10" fill="none" stroke="#769f91" stroke-width="13" stroke-linecap="round"/><path d="M498 224h10l17-10m-17 10l17 10" fill="none" stroke="#d9e9dd" stroke-width="8" stroke-linecap="round"/></g>
 </g>
 <g id="scene-preoxygenation"><path d="M424 266L390 240" stroke="#8fac9a" stroke-width="1.5" stroke-dasharray="3 3"/><rect x="200" y="211" width="190" height="39" rx="10" fill="#f9fcf2" stroke="#bfd3bd"/><text x="295" y="227" text-anchor="middle" class="oxygen-caption">${esc(c.preoxygenation)}</text><text x="295" y="242" text-anchor="middle" class="oxygen-value">O₂ 100%</text></g></g>`;}
