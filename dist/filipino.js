@@ -20,3 +20,8 @@ for (const pack of Object.values(LANGUAGES)) {
 
 const MAP_ACCESSIBILITY={'zh-Hant':'七個依序編號的麻醉照護站',en:'Seven numbered anesthesia care stops',id:'Tujuh pos perawatan anestesi bernomor urut',th:'จุดดูแลเกี่ยวกับยาระงับความรู้สึก 7 จุดเรียงตามลำดับ',vi:'Bảy trạm chăm sóc gây mê được đánh số theo thứ tự',fil:'Pitong istasyon ng pangangalaga sa anesthesia ayon sa pagkakasunod'};
 for(const [code,aria] of Object.entries(MAP_ACCESSIBILITY)) LANGUAGES[code].mapAria=aria;
+
+const GUIDE_TEXT={
+ 'zh-Hant':'點這裡：術前評估',en:'Start here: health check',id:'Mulai: cek kesehatan',th:'เริ่มที่นี่: ตรวจสุขภาพ',vi:'Bắt đầu: khám sức khỏe',fil:'Simulan dito: pagsusuri'
+};
+for(const [code,label] of Object.entries(GUIDE_TEXT)) LANGUAGES[code].preopGuide=label;

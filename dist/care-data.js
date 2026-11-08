@@ -53,3 +53,13 @@ const PREOXYGENATION_TEXT={
  fil:['Oxygen bago ang anesthesia','Ipinapakita ang pagbibigay ng 100% oxygen sa face mask bago ang anesthesia. Nakadepende sa selyo ng mask at ibang salik ang tunay na konsentrasyong nalalanghap.']
 };
 for(const [code,text] of Object.entries(PREOXYGENATION_TEXT))Object.assign(CARE_I18N[code],{preoxygenation:text[0],preoxygenationNote:text[1]});
+
+const WARMING_VISIBILITY={
+ 'zh-Hant':['保溫毯與保溫機','保溫毯與藍色保溫機已顯示，並已加入討論清單。','尚未勾選保溫毯，所以圖上只顯示一般覆單。重新整理會清除本次選擇。','顯示保溫毯與保溫機（加入討論清單）'],
+ en:['Warming blanket and unit','The warming blanket and blue unit are shown and added to your discussion list.','No warming blanket is selected, so only a normal sheet is shown. Refreshing clears the choices in this page.','Show the warming blanket and unit (add to discussion list)'],
+ id:['Selimut dan mesin penghangat','Selimut dan mesin biru ditampilkan dan ditambahkan ke daftar diskusi.','Selimut penghangat belum dipilih, jadi hanya kain penutup biasa yang ditampilkan. Memuat ulang menghapus pilihan.','Tampilkan selimut dan mesin penghangat (tambahkan ke daftar diskusi)'],
+ th:['ผ้าห่มอุ่นและเครื่องทำความอุ่น','แสดงผ้าห่มอุ่นและเครื่องสีน้ำเงินแล้ว และเพิ่มในรายการพูดคุย','ยังไม่ได้เลือกผ้าห่มอุ่น จึงแสดงเพียงผ้าคลุมปกติ เมื่อรีเฟรชตัวเลือกจะถูกล้าง','แสดงผ้าห่มอุ่นและเครื่อง (เพิ่มในรายการพูดคุย)'],
+ vi:['Chăn và máy làm ấm','Đã hiển thị chăn và máy màu xanh, đồng thời thêm vào danh sách trao đổi.','Chưa chọn chăn giữ ấm nên chỉ hiển thị tấm phủ thường. Tải lại trang sẽ xóa lựa chọn.','Hiển thị chăn và máy làm ấm (thêm vào danh sách trao đổi)'],
+ fil:['Kumot at makinang pampainit','Ipinapakita na ang kumot at asul na makina, at kasama sa listahan ng pag-uusapan.','Wala pang napiling kumot na pampainit kaya karaniwang sapin lang ang nakikita. Nabubura ang pagpili kapag ni-refresh.','Ipakita ang kumot at makina (idagdag sa listahan ng pag-uusapan)']
+};
+for(const [code,v] of Object.entries(WARMING_VISIBILITY))Object.assign(CARE_I18N[code],{warmTitle:v[0],warmShown:v[1],warmHidden:v[2],warmToggle:v[3]});

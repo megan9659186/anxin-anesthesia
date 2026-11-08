@@ -37,6 +37,7 @@ function applyPhase(){document.querySelectorAll('.house').forEach(el=>{const mat
 function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();if(patient)positionPatient(patientPoint);}
 function updateProgress(){ $('#progress-bar').style.width=(seen.size/totalStops*100)+'%';$('#progress-text').textContent=t('progress',{n:seen.size,total:totalStops});}
 function renderPatient(){
+ updatePreopGuide();
  $('#portrait').innerHTML=avatar();const info=$('#patient-info');info.innerHTML='';
  if(!patient){info.append(textElement('strong',t('newPatient')),textElement('small',t('patientSubtitle')));$('#location').textContent=t('instruction');$('#next-station').textContent=t('begin');return}
  info.append(textElement('strong',patient.name),textElement('small',`${t('ageSummary',{n:patient.age})} · ${ui().sexOptions[patient.sex]}`));
@@ -90,3 +91,7 @@ $('#index-button').onclick=showIndex;$('#about-button').onclick=showAbout;
 $('#walk-animation').onchange=e=>{animateWalking=e.target.checked};
 $('#quiz-yes').onclick=()=>{quizAnswer=false;renderQuiz()};$('#quiz-no').onclick=()=>{quizAnswer=true;renderQuiz()};
 updateLanguage('zh-Hant');showLanguages();
+
+function updatePreopGuide(){const guide=$('#preop-guide');const visible=!!patient&&!seen.has(0);guide.setAttribute('visibility',visible?'visible':'hidden');guide.setAttribute('aria-hidden',String(!visible));guide.setAttribute('tabindex',visible?'0':'-1');guide.setAttribute('aria-label',t('preopGuide'));$('#preop-guide-label').textContent=t('preopGuide');}
+$('#preop-guide').addEventListener('click',()=>visit(0));
+$('#preop-guide').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();visit(0)}});
