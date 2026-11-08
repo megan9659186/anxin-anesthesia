@@ -1,0 +1,91 @@
+'use strict';
+const $ = selector => document.querySelector(selector);
+const svgNS = 'http://www.w3.org/2000/svg';
+let language = 'zh-Hant', languageChosen = false, patient = null, draft = null;
+let currentStation = 0, currentTopic = null, moving = false, pendingStation = null, reopenProfile = false;
+let phase = 'all', seen = new Set(), quizAnswer = null;
+let patientPoint = [350,300], animateWalking = true;
+const houses = [[350,240],[490,160],[630,240],[770,320],[630,400],[490,480],[350,400],[210,320]];
+const route = houses.map(([x,y]) => [x,y+60]);
+const phaseFor = i => i < 3 ? 1 : i < 5 ? 2 : 3;
+const colors = ['#cbdcae','#e7ce9c','#c1d7b9','#b9d5c5','#e8c19d','#d8d7b0','#c9cca2','#b9d3bc'];
+const ui = () => LANGUAGES[language];
+const t = (key, values = {}) => String(ui()[key]).replace(/\{(\w+)\}/g, (_, k) => values[k] ?? '');
+const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reducedMotion = () => !animateWalking;
+const topicName = i => ui().topics[i][0];
+function textElement(tag, text, className) { const el=document.createElement(tag); el.textContent=text; if(className)el.className=className; return el; }
+function avatar() { return `<ellipse cx="0" cy="14" rx="19" ry="7" fill="#244c4330"/><g class="little-body"><path class="leg-left" d="M-9-5v20" stroke="#456a65" stroke-width="7" stroke-linecap="round"/><path class="leg-right" d="M9-5v20" stroke="#456a65" stroke-width="7" stroke-linecap="round"/><path class="arm-left" d="M-16-27l-5 19" stroke="#f0c6a1" stroke-width="6" stroke-linecap="round"/><path class="arm-right" d="M16-27l5 19" stroke="#f0c6a1" stroke-width="6" stroke-linecap="round"/><path d="M-16-30q16-12 32 0l-2 29h-28Z" fill="#faf8ed" stroke="#87afa0" stroke-width="2"/><path d="M-8-23h16m-16 8h16m-12 8h8" stroke="#b3d4c3" stroke-width="2"/><circle cy="-48" r="17" fill="#f2cfad"/><path d="M-17-49q-1-24 17-20 21 0 17 22l-7-11q-17 9-25 3Z" fill="#48685a"/><circle cx="-6" cy="-47" r="1.6" fill="#284c47"/><circle cx="6" cy="-47" r="1.6" fill="#284c47"/><path d="M-4-40q4 4 8 0" stroke="#a16c56" fill="none" stroke-width="1.5"/></g>`; }
+function building(i) { const c=['#f8f4df','#e5b28d','#91b4a4','#eee4bd'][i%4];return `<g transform="translate(-29 -43)"><path d="M0 20L30 3L63 22L33 40Z" fill="#597e68" opacity=".13" transform="translate(0 35)"/><path d="M4 15L30 0L59 16V50L32 66L4 50Z" fill="${c}"/><path d="M32 31L59 16V50L32 66Z" fill="#000" opacity=".09"/><path class="roof" d="M-2 15L30-5L65 15L32 35Z" fill="${i%2?'#719483':'#c88c6d'}"/><path d="M19 35V49L27 54V40Z M39 39V49L48 44V34Z" fill="#517e76"/><path d="M11 33V41L16 44V36Z" fill="#fff9"/>${i===3?'<path d="M25 4h10m-5-5v10" stroke="#fff" stroke-width="3"/>':''}</g>`; }
+function svgText(text,x,y,cls){const el=document.createElementNS(svgNS,'text');el.setAttribute('x',x);el.setAttribute('y',y);el.setAttribute('class',cls);el.textContent=text;return el;}
+function renderMap(){
+ $('#plots').innerHTML='';$('#houses').innerHTML='';$('#route-arrows').innerHTML='';
+ houses.forEach(([x,y],i)=>{
+  $('#plots').insertAdjacentHTML('beforeend',`<path id="plot-${i}" class="plot${currentStation===i&&patient?' active':''}" fill="${colors[i]}" d="M${x} ${y-50}l104 60-104 60-104-60Z"/>`);
+  const g=document.createElementNS(svgNS,'g');g.setAttribute('class','house');g.setAttribute('data-station',i);g.setAttribute('transform',`translate(${x} ${y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t('station',{n:i+1})+': '+topicName(i));g.innerHTML=building(i)+`<circle cx="-44" cy="-9" r="13" fill="#557b66"/><text class="station-number" x="-44" y="-4">${i+1}</text>`;
+  const name=topicName(i);let lines=[name];if(name.length>19&&name.includes(' ')){let parts=name.split(' '),line='';lines=[];parts.forEach(word=>{if((line+' '+word).trim().length>19&&line){lines.push(line);line=word}else line=(line+' '+word).trim()});if(line)lines.push(line)}
+  lines.forEach((line,j)=>g.append(svgText(line,0,37+j*14,'station-label')));
+  g.append(svgText(ui().phases[phaseFor(i)],0,lines.length>1?67:52,'station-sublabel'));
+  g.addEventListener('click',()=>visit(i));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();visit(i)}});$('#houses').append(g);
+  if(i<7){const a=route[i],b=route[i+1],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,angle=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;$('#route-arrows').insertAdjacentHTML('beforeend',`<path d="M-4-3L2 0L-4 3" fill="none" stroke="#6a8969" stroke-width="2" transform="translate(${mx} ${my}) rotate(${angle})"/>`)}
+ });
+ $('#sea-label').textContent=t('sea');$('#island').setAttribute('aria-label',t('mapAria'));
+ $('#phases').innerHTML='';ui().phases.forEach((name,i)=>{const b=textElement('button',name,phase===(i?String(i):'all')?'active':'');b.dataset.phase=i?String(i):'all';b.setAttribute('aria-pressed',b.classList.contains('active'));b.onclick=()=>{phase=b.dataset.phase;applyPhase()};$('#phases').append(b)});applyPhase();
+}
+function applyPhase(){document.querySelectorAll('.house').forEach(el=>{const match=phase==='all'||String(phaseFor(+el.dataset.station))===phase;el.style.opacity=match?'1':'.28'});document.querySelectorAll('[data-phase]').forEach(b=>{const active=b.dataset.phase===phase;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active)})}
+function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();if(patient)positionPatient(patientPoint);}
+function updateProgress(){ $('#progress-bar').style.width=(seen.size/8*100)+'%';$('#progress-text').textContent=t('progress',{n:seen.size});}
+function renderPatient(){
+ $('#portrait').innerHTML=avatar();const info=$('#patient-info');info.innerHTML='';
+ if(!patient){info.append(textElement('strong',t('newPatient')),textElement('small',t('patientSubtitle')));$('#location').textContent=t('instruction');$('#next-station').textContent=t('begin');return}
+ info.append(textElement('strong',patient.name),textElement('small',`${t('ageSummary',{n:patient.age})} · ${ui().sexOptions[patient.sex]}`));
+ const edit=textElement('button',t('edit'));edit.onclick=()=>openPatientForm();info.append(edit);
+ $('#location').textContent=t('at',{name:patient.name,station:topicName(currentStation)});$('#next-station').textContent=t(currentStation===7?'finish':'next');
+ $('#patient-sprite').innerHTML=avatar();$('#patient-sprite').setAttribute('transform','scale(.46)');$('#patient-label').textContent=patient.name;
+ $('#patient-marker').setAttribute('visibility','visible');$('#patient-marker').setAttribute('aria-label',t('at',{name:patient.name,station:topicName(currentStation)}));
+ // Keep long names readable without covering the neighbouring building.
+ $('#patient-label').setAttribute('textLength',patient.name.length>9?'72':'');if(patient.name.length<=9)$('#patient-label').removeAttribute('textLength');$('#patient-label').setAttribute('lengthAdjust','spacingAndGlyphs');
+}
+function positionPatient(point){patientPoint=[...point];$('#patient-marker').setAttribute('transform',`translate(${point[0]} ${point[1]})`);}
+function setWalking(on,target){moving=on;$('#patient-marker').classList.toggle('walking',on);$('#next-station').disabled=on;document.querySelectorAll('.house').forEach(el=>el.setAttribute('aria-disabled',on));if(on){$('#location').textContent=t('walking',{station:topicName(target)});$('#next-station').textContent=t('walking',{station:topicName(target)})}else renderPatient();}
+function animateSegment(target){const start=[...patientPoint];const distance=Math.hypot(target[0]-start[0],target[1]-start[1]);const duration=reducedMotion()?0:Math.max(450,distance*4.6);return new Promise(resolve=>{let begin;function frame(now){if(begin===undefined)begin=now;const p=duration===0?1:Math.min(1,(now-begin)/duration);positionPatient([start[0]+(target[0]-start[0])*p,start[1]+(target[1]-start[1])*p]);if(p<1)requestAnimationFrame(frame);else resolve()}requestAnimationFrame(frame)});}
+async function visit(i){
+ if(moving)return;if(!patient){pendingStation=i;openPatientForm();return}
+ if(i!==currentStation){setWalking(true,i);if(window.innerWidth<=640){const scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,patientPoint[0]/820*$('#island').getBoundingClientRect().width-scroll.clientWidth/2),behavior:'smooth'})}
+  const forward=(i-currentStation+8)%8,backward=(currentStation-i+8)%8,step=forward<=backward?1:-1;let n=currentStation;
+  while(n!==i){n=(n+step+8)%8;await animateSegment(route[n]);if(window.innerWidth<=640){const box=$('#island').getBoundingClientRect(),scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,(patientPoint[0]-80)/820*box.width-scroll.clientWidth/2),behavior:reducedMotion()?'auto':'smooth'})}}
+  currentStation=i;setWalking(false,i);
+ }
+ seen.add(i);updateProgress();document.querySelectorAll('.plot').forEach((p,j)=>p.classList.toggle('active',i===j));openTopic(i);
+}
+function openTopic(i){
+ currentTopic=i;const topic=ui().topics[i],root=$('#topic-content');root.innerHTML='';
+ root.append(textElement('div',t('arrived',{name:patient.name,n:i+1}),'arrival'),textElement('div',t('station',{n:i+1}),'station-chip'));
+ const title=textElement('h2',topic[0]);title.id='topic-title';root.append(title,textElement('p',topic[1],'topic-subtitle'),textElement('p',topic[2]));const ul=document.createElement('ul');topic[3].forEach(line=>ul.append(textElement('li',line)));root.append(ul,textElement('div',topic[4],'tip'));
+ const back=textElement('button',t('backMap'),'primary');back.style.marginTop='20px';back.onclick=()=>$('#topic-dialog').close();root.append(back,textElement('p',t('nextRelated'),'hint'));const related=document.createElement('div');related.className='related';[...new Set([Math.min(7,i+1),i===7?0:Math.max(0,i-1)])].filter(j=>j!==i).forEach(j=>{const b=textElement('button',`${j+1}. ${topicName(j)} →`);b.onclick=()=>{$('#topic-dialog').close();visit(j)};related.append(b)});root.append(related);if(!$('#topic-dialog').open)$('#topic-dialog').showModal();$('#topic-dialog').scrollTop=0;
+}
+function optionField(key,title,options,value=''){return `<label class="field" for="${key}">${esc(title)}</label><select name="${key}" id="${key}" required><option value="">${esc(t('select'))}</option>${options.map((label,i)=>`<option value="${i}"${String(value)===String(i)?' selected':''}>${esc(label)}</option>`).join('')}</select>`;}
+function collectDraft(){const f=$('#patient-form');if(!f)return null;const data=new FormData(f);return {name:String(data.get('name')||''),age:String(data.get('age')||''),sex:data.get('sex'),diseases:data.getAll('disease').map(Number),other:String(data.get('other')||''),history:data.get('history'),motion:data.get('motion'),smoking:data.get('smoking'),pain:data.get('pain')};}
+function openPatientForm(){
+ const data=draft||patient||{name:'',age:'',sex:'',diseases:[],other:'',history:'',motion:'',smoking:'',pain:''};draft=null;
+ $('#patient-form-content').innerHTML=`<button class="change-language" id="form-language">🌐 ${esc(ui().native)}</button><div class="profile-top"><svg viewBox="-35 -85 70 110" aria-hidden="true">${avatar()}</svg><div><h2 id="patient-title">${esc(t(patient?'editPatient':'newPatient'))}</h2><p>${esc(t('patientSubtitle'))}</p></div></div><form class="patient-form" id="patient-form"><label class="field" for="patient-name">${esc(t('name'))}</label><input name="name" id="patient-name" type="text" maxlength="20" required autocomplete="off" placeholder="${esc(t('namePlaceholder'))}" value="${esc(data.name)}"><div class="formrow"><div>${optionField('sex',t('sex'),ui().sexOptions,data.sex)}</div><div><label class="field" for="patient-age">${esc(t('age'))}</label><input name="age" id="patient-age" type="number" min="0" max="120" step="1" required placeholder="${esc(t('agePlaceholder'))}" value="${esc(data.age)}"></div></div><fieldset><legend>${esc(t('diseaseTitle'))}</legend><div class="checks">${ui().diseases.map((name,i)=>`<label><input type="checkbox" name="disease" value="${i}"${data.diseases.includes(i)?' checked':''}>${esc(name)}</label>`).join('')}</div></fieldset><label class="field" for="other-disease">${esc(t('otherDisease'))}</label><input name="other" id="other-disease" type="text" maxlength="100" placeholder="${esc(t('otherPlaceholder'))}" value="${esc(data.other)}"><fieldset><legend>${esc(t('nauseaTitle'))}</legend><p class="hint">${esc(t('nauseaIntro'))}</p>${optionField('history',t('historyQuestion'),ui().historyOptions,data.history)}${optionField('motion',t('motionQuestion'),ui().motionOptions,data.motion)}${optionField('smoking',t('smokingQuestion'),ui().smokingOptions,data.smoking)}${optionField('pain',t('painQuestion'),ui().painOptions,data.pain)}<p class="hint">${esc(t('nauseaHint'))}</p></fieldset><p class="hint">${esc(t('privacy'))}</p><button class="primary" type="submit">${esc(t(patient?'save':'create'))}</button></form>`;
+ $('#form-language').onclick=()=>{draft=collectDraft();reopenProfile=true;$('#patient-dialog').close();showLanguages()};
+ const form=$('#patient-form');form.elements.name.oninput=()=>form.elements.name.setCustomValidity('');
+ form.querySelectorAll('[name=disease]').forEach(box=>box.onchange=()=>{form.querySelector('[name=disease]').setCustomValidity('');if(!box.checked)return;form.querySelectorAll('[name=disease]').forEach(other=>{if(other!==box&&(Number(box.value)>=8||Number(other.value)>=8))other.checked=false})});
+ form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}const creating=!patient;patient=value;$('#patient-dialog').close();renderPatient();positionPatient(route[currentStation]);const destination=pendingStation;pendingStation=null;if(destination!==null)visit(destination);else if(creating)visit(currentStation)};
+ if(!$('#patient-dialog').open)$('#patient-dialog').showModal();$('#patient-dialog').scrollTop=0;
+}
+function showLanguages(){if(moving)return;$('#language-dialog').showModal();$('#language-dialog').scrollTop=0;}
+function showIndex(){if(moving)return;const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('searchTitle'))}</h2><input class="search" type="search" aria-label="${esc(t('searchPlaceholder'))}" placeholder="${esc(t('searchPlaceholder'))}"><div id="results"></div>`;const render=q=>{const results=$('#results');results.innerHTML='';const matches=ui().topics.map((topic,i)=>({topic,i})).filter(({topic})=>topic.flat(2).join(' ').toLocaleLowerCase().includes(q.toLocaleLowerCase()));if(!matches.length){results.append(textElement('p',t('noResults')));return}matches.forEach(({i})=>{const b=document.createElement('button');b.className='listbutton';b.append(textElement('span',`${i+1}. ${topicName(i)}`),textElement('small',t(seen.has(i)?'visited':'explore')));b.onclick=()=>{$('#topic-dialog').close();visit(i)};results.append(b)})};render('');root.querySelector('input').oninput=e=>render(e.target.value.trim());$('#topic-dialog').showModal();}
+function showAbout(){const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('aboutTitle'))}</h2><p>${esc(t('aboutBody'))}</p><p>${esc(t('aboutNote'))}</p><p class="hint">${esc(t('sources'))}:<br><a href="https://madeforthismoment.asahq.org/anesthesia-101/" target="_blank" rel="noopener">${esc(t('sourceASA'))}</a><br><a href="https://anesth.or.jp/users/english/for_patients/patient_guide" target="_blank" rel="noopener">${esc(t('sourceJapan'))}</a></p><p class="hint">${esc(t('independent'))}</p>`;$('#topic-dialog').showModal();}
+function renderQuiz(){const result=$('#quiz-feedback');result.textContent=quizAnswer===null?t('quizHint'):(t(quizAnswer?'quizRight':'quizTry')+' '+t('quizExplanation'));}
+$('#language-button').onclick=()=>{reopenProfile=false;showLanguages()};
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const needsProfile=!patient||reopenProfile;languageChosen=true;updateLanguage(b.dataset.lang);$('#language-dialog').close();reopenProfile=false;if(needsProfile)openPatientForm()});
+$('#language-dialog').addEventListener('cancel',e=>{if(!languageChosen||reopenProfile)e.preventDefault()});
+$('#close-patient').onclick=()=>{$('#patient-dialog').close();draft=null;pendingStation=null};
+$('#close-topic').onclick=()=>$('#topic-dialog').close();$('#topic-dialog').onclick=e=>{if(e.target===$('#topic-dialog'))$('#topic-dialog').close()};
+$('#next-station').onclick=()=>{if(!patient)openPatientForm();else visit((currentStation+1)%8)};
+$('#index-button').onclick=showIndex;$('#about-button').onclick=showAbout;
+$('#walk-animation').onchange=e=>{animateWalking=e.target.checked};
+$('#quiz-yes').onclick=()=>{quizAnswer=false;renderQuiz()};$('#quiz-no').onclick=()=>{quizAnswer=true;renderQuiz()};
+updateLanguage('zh-Hant');showLanguages();
