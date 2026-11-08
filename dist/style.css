@@ -12,3 +12,5 @@
 @media(max-width:520px){.care-grid{grid-template-columns:1fr}.wide-dialog>.modalbody{padding:20px}.visitor-banner{padding:14px;gap:10px}.visitor-banner svg{width:50px}.visitor-banner h3{font-size:17px}.preop-care h3{font-size:18px}.room-legend ol,.medicine-grid{grid-template-columns:1fr}.room-illustration{overflow-x:auto}.room-illustration svg{min-width:620px}.care-methods,.care-conditions{padding:14px}.condition-grid{gap:15px}.staff-labels text{font-size:11px}}
 
 .equipment-name,.warming-equipment-name{font-family:inherit;fill:#527768;font-weight:700;font-size:12px}.warming-equipment-name{font-size:10px}.machine-legend{font-size:12px;font-weight:700;padding:10px 12px;background:#e1ebe2;border-radius:6px;margin-bottom:16px}
+
+.oxygen-caption{font-family:inherit;font-size:10px;fill:#5b7c67}.oxygen-value{font-family:inherit;font-size:14px;font-weight:700;fill:#3f775d}.preoxygenation-note{font-size:11px;line-height:1.9;background:#e0ebdf;border-radius:8px;padding:12px;margin-bottom:18px}

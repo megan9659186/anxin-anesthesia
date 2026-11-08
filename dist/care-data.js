@@ -43,3 +43,13 @@ const EQUIPMENT_LABELS={
  fil:['Makina ng anesthesia','Makinang pampainit']
 };
 for(const [code,labels] of Object.entries(EQUIPMENT_LABELS))Object.assign(CARE_I18N[code],{machine:labels[0],warmingMachine:labels[1]});
+
+const PREOXYGENATION_TEXT={
+ 'zh-Hant':['麻醉前預充氧','此幕為麻醉前預充氧：經面罩供應 100% 氧氣；實際吸入濃度會受面罩密合度等因素影響。'],
+ en:['Preoxygenation before anesthesia','This scene shows preoxygenation: 100% oxygen is supplied through a face mask. The actual inspired concentration depends on the mask seal and other factors.'],
+ id:['Praoksigenasi sebelum anestesi','Adegan ini menunjukkan praoksigenasi: oksigen 100% disalurkan melalui masker. Konsentrasi yang terhirup dipengaruhi kerapatan masker dan faktor lain.'],
+ th:['ให้ออกซิเจนก่อนดมยา','ภาพนี้แสดงการให้ออกซิเจน 100% ผ่านหน้ากากก่อนดมยา ความเข้มข้นที่หายใจเข้าจริงขึ้นกับความแนบสนิทของหน้ากากและปัจจัยอื่น'],
+ vi:['Thở oxy trước gây mê','Cảnh này minh họa cấp oxy 100% qua mặt nạ trước gây mê. Nồng độ thực tế hít vào phụ thuộc độ kín của mặt nạ và các yếu tố khác.'],
+ fil:['Oxygen bago ang anesthesia','Ipinapakita ang pagbibigay ng 100% oxygen sa face mask bago ang anesthesia. Nakadepende sa selyo ng mask at ibang salik ang tunay na konsentrasyong nalalanghap.']
+};
+for(const [code,text] of Object.entries(PREOXYGENATION_TEXT))Object.assign(CARE_I18N[code],{preoxygenation:text[0],preoxygenationNote:text[1]});
