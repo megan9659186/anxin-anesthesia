@@ -5,9 +5,10 @@ let language = 'zh-Hant', languageChosen = false, patient = null, draft = null;
 let currentStation = 0, currentTopic = null, moving = false, pendingStation = null, reopenProfile = false;
 let phase = 'all', seen = new Set(), quizAnswer = null;
 let patientPoint = [350,300], animateWalking = true;
-const houses = [[350,240],[490,160],[630,240],[770,320],[630,400],[490,480],[350,400],[210,320]];
+const houses = [[280,260],[470,155],[670,260],[760,380],[570,490],[370,490],[180,380]];
+const totalStops=houses.length;
 const route = houses.map(([x,y]) => [x,y+60]);
-const phaseFor = i => i < 3 ? 1 : i < 5 ? 2 : 3;
+const phaseFor = i => i < 2 ? 1 : i < 4 ? 2 : 3;
 const colors = ['#cbdcae','#e7ce9c','#c1d7b9','#b9d5c5','#e8c19d','#d8d7b0','#c9cca2','#b9d3bc'];
 const ui = () => LANGUAGES[language];
 const t = (key, values = {}) => String(ui()[key]).replace(/\{(\w+)\}/g, (_, k) => values[k] ?? '');
@@ -27,20 +28,20 @@ function renderMap(){
   lines.forEach((line,j)=>g.append(svgText(line,0,37+j*14,'station-label')));
   g.append(svgText(ui().phases[phaseFor(i)],0,lines.length>1?67:52,'station-sublabel'));
   g.addEventListener('click',()=>visit(i));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();visit(i)}});$('#houses').append(g);
-  if(i<7){const a=route[i],b=route[i+1],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,angle=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;$('#route-arrows').insertAdjacentHTML('beforeend',`<path d="M-4-3L2 0L-4 3" fill="none" stroke="#6a8969" stroke-width="2" transform="translate(${mx} ${my}) rotate(${angle})"/>`)}
+  if(i<totalStops-1){const a=route[i],b=route[i+1],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,angle=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;$('#route-arrows').insertAdjacentHTML('beforeend',`<path d="M-4-3L2 0L-4 3" fill="none" stroke="#6a8969" stroke-width="2" transform="translate(${mx} ${my}) rotate(${angle})"/>`)}
  });
  $('#sea-label').textContent=t('sea');$('#island').setAttribute('aria-label',t('mapAria'));
  $('#phases').innerHTML='';ui().phases.forEach((name,i)=>{const b=textElement('button',name,phase===(i?String(i):'all')?'active':'');b.dataset.phase=i?String(i):'all';b.setAttribute('aria-pressed',b.classList.contains('active'));b.onclick=()=>{phase=b.dataset.phase;applyPhase()};$('#phases').append(b)});applyPhase();
 }
 function applyPhase(){document.querySelectorAll('.house').forEach(el=>{const match=phase==='all'||String(phaseFor(+el.dataset.station))===phase;el.style.opacity=match?'1':'.28'});document.querySelectorAll('[data-phase]').forEach(b=>{const active=b.dataset.phase===phase;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active)})}
 function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();if(patient)positionPatient(patientPoint);}
-function updateProgress(){ $('#progress-bar').style.width=(seen.size/8*100)+'%';$('#progress-text').textContent=t('progress',{n:seen.size});}
+function updateProgress(){ $('#progress-bar').style.width=(seen.size/totalStops*100)+'%';$('#progress-text').textContent=t('progress',{n:seen.size,total:totalStops});}
 function renderPatient(){
  $('#portrait').innerHTML=avatar();const info=$('#patient-info');info.innerHTML='';
  if(!patient){info.append(textElement('strong',t('newPatient')),textElement('small',t('patientSubtitle')));$('#location').textContent=t('instruction');$('#next-station').textContent=t('begin');return}
  info.append(textElement('strong',patient.name),textElement('small',`${t('ageSummary',{n:patient.age})} · ${ui().sexOptions[patient.sex]}`));
  const edit=textElement('button',t('edit'));edit.onclick=()=>openPatientForm();info.append(edit);
- $('#location').textContent=t('at',{name:patient.name,station:topicName(currentStation)});$('#next-station').textContent=t(currentStation===7?'finish':'next');
+ $('#location').textContent=t('at',{name:patient.name,station:topicName(currentStation)});$('#next-station').textContent=t(currentStation===totalStops-1?'finish':'next');
  $('#patient-sprite').innerHTML=avatar();$('#patient-sprite').setAttribute('transform','scale(.46)');$('#patient-label').textContent=patient.name;
  $('#patient-marker').setAttribute('visibility','visible');$('#patient-marker').setAttribute('aria-label',t('at',{name:patient.name,station:topicName(currentStation)}));
  // Keep long names readable without covering the neighbouring building.
@@ -52,17 +53,17 @@ function animateSegment(target){const start=[...patientPoint];const distance=Mat
 async function visit(i){
  if(moving)return;if(!patient){pendingStation=i;openPatientForm();return}
  if(i!==currentStation){setWalking(true,i);if(window.innerWidth<=640){const scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,patientPoint[0]/820*$('#island').getBoundingClientRect().width-scroll.clientWidth/2),behavior:'smooth'})}
-  const forward=(i-currentStation+8)%8,backward=(currentStation-i+8)%8,step=forward<=backward?1:-1;let n=currentStation;
-  while(n!==i){n=(n+step+8)%8;await animateSegment(route[n]);if(window.innerWidth<=640){const box=$('#island').getBoundingClientRect(),scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,(patientPoint[0]-80)/820*box.width-scroll.clientWidth/2),behavior:reducedMotion()?'auto':'smooth'})}}
+  const forward=(i-currentStation+totalStops)%totalStops,backward=(currentStation-i+totalStops)%totalStops,step=forward<=backward?1:-1;let n=currentStation;
+  while(n!==i){n=(n+step+totalStops)%totalStops;await animateSegment(route[n]);if(window.innerWidth<=640){const box=$('#island').getBoundingClientRect(),scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,(patientPoint[0]-80)/820*box.width-scroll.clientWidth/2),behavior:reducedMotion()?'auto':'smooth'})}}
   currentStation=i;setWalking(false,i);
  }
- seen.add(i);updateProgress();document.querySelectorAll('.plot').forEach((p,j)=>p.classList.toggle('active',i===j));openTopic(i);
+ seen.add(i);renderPatient();updateProgress();document.querySelectorAll('.plot').forEach((p,j)=>p.classList.toggle('active',i===j));openTopic(i);
 }
 function openTopic(i){
- currentTopic=i;const topic=ui().topics[i],root=$('#topic-content');root.innerHTML='';
+ currentTopic=i;const topic=ui().topics[i],root=$('#topic-content');root.innerHTML='';$('#topic-dialog').classList.toggle('wide-dialog',i===0||i===2);if(i===2){renderOperatingRoom(root);if(!$('#topic-dialog').open)$('#topic-dialog').showModal();$('#topic-dialog').scrollTop=0;return}
  root.append(textElement('div',t('arrived',{name:patient.name,n:i+1}),'arrival'),textElement('div',t('station',{n:i+1}),'station-chip'));
- const title=textElement('h2',topic[0]);title.id='topic-title';root.append(title,textElement('p',topic[1],'topic-subtitle'),textElement('p',topic[2]));const ul=document.createElement('ul');topic[3].forEach(line=>ul.append(textElement('li',line)));root.append(ul,textElement('div',topic[4],'tip'));
- const back=textElement('button',t('backMap'),'primary');back.style.marginTop='20px';back.onclick=()=>$('#topic-dialog').close();root.append(back,textElement('p',t('nextRelated'),'hint'));const related=document.createElement('div');related.className='related';[...new Set([Math.min(7,i+1),i===7?0:Math.max(0,i-1)])].filter(j=>j!==i).forEach(j=>{const b=textElement('button',`${j+1}. ${topicName(j)} →`);b.onclick=()=>{$('#topic-dialog').close();visit(j)};related.append(b)});root.append(related);if(!$('#topic-dialog').open)$('#topic-dialog').showModal();$('#topic-dialog').scrollTop=0;
+ const title=textElement('h2',topic[0]);title.id='topic-title';root.append(title,textElement('p',topic[1],'topic-subtitle'),textElement('p',topic[2]));const ul=document.createElement('ul');topic[3].forEach(line=>ul.append(textElement('li',line)));root.append(ul,textElement('div',topic[4],'tip'));if(i===0)renderPreopCare(root);
+ const back=textElement('button',t('backMap'),'primary');back.style.marginTop='20px';back.onclick=()=>$('#topic-dialog').close();root.append(back,textElement('p',t('nextRelated'),'hint'));const related=document.createElement('div');related.className='related';[...new Set([Math.min(totalStops-1,i+1),i===totalStops-1?0:Math.max(0,i-1)])].filter(j=>j!==i).forEach(j=>{const b=textElement('button',`${j+1}. ${topicName(j)} →`);b.onclick=()=>{$('#topic-dialog').close();visit(j)};related.append(b)});root.append(related);if(!$('#topic-dialog').open)$('#topic-dialog').showModal();$('#topic-dialog').scrollTop=0;
 }
 function optionField(key,title,options,value=''){return `<label class="field" for="${key}">${esc(title)}</label><select name="${key}" id="${key}" required><option value="">${esc(t('select'))}</option>${options.map((label,i)=>`<option value="${i}"${String(value)===String(i)?' selected':''}>${esc(label)}</option>`).join('')}</select>`;}
 function collectDraft(){const f=$('#patient-form');if(!f)return null;const data=new FormData(f);return {name:String(data.get('name')||''),age:String(data.get('age')||''),sex:data.get('sex'),diseases:data.getAll('disease').map(Number),other:String(data.get('other')||''),history:data.get('history'),motion:data.get('motion'),smoking:data.get('smoking'),pain:data.get('pain')};}
@@ -72,19 +73,19 @@ function openPatientForm(){
  $('#form-language').onclick=()=>{draft=collectDraft();reopenProfile=true;$('#patient-dialog').close();showLanguages()};
  const form=$('#patient-form');form.elements.name.oninput=()=>form.elements.name.setCustomValidity('');
  form.querySelectorAll('[name=disease]').forEach(box=>box.onchange=()=>{form.querySelector('[name=disease]').setCustomValidity('');if(!box.checked)return;form.querySelectorAll('[name=disease]').forEach(other=>{if(other!==box&&(Number(box.value)>=8||Number(other.value)>=8))other.checked=false})});
- form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}const creating=!patient;patient=value;$('#patient-dialog').close();renderPatient();positionPatient(route[currentStation]);const destination=pendingStation;pendingStation=null;if(destination!==null)visit(destination);else if(creating)visit(currentStation)};
+ form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}patient=value;$('#patient-dialog').close();renderPatient();positionPatient(route[currentStation]);pendingStation=null;$('#location').textContent=careText().visit};
  if(!$('#patient-dialog').open)$('#patient-dialog').showModal();$('#patient-dialog').scrollTop=0;
 }
 function showLanguages(){if(moving)return;$('#language-dialog').showModal();$('#language-dialog').scrollTop=0;}
-function showIndex(){if(moving)return;const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('searchTitle'))}</h2><input class="search" type="search" aria-label="${esc(t('searchPlaceholder'))}" placeholder="${esc(t('searchPlaceholder'))}"><div id="results"></div>`;const render=q=>{const results=$('#results');results.innerHTML='';const matches=ui().topics.map((topic,i)=>({topic,i})).filter(({topic})=>topic.flat(2).join(' ').toLocaleLowerCase().includes(q.toLocaleLowerCase()));if(!matches.length){results.append(textElement('p',t('noResults')));return}matches.forEach(({i})=>{const b=document.createElement('button');b.className='listbutton';b.append(textElement('span',`${i+1}. ${topicName(i)}`),textElement('small',t(seen.has(i)?'visited':'explore')));b.onclick=()=>{$('#topic-dialog').close();visit(i)};results.append(b)})};render('');root.querySelector('input').oninput=e=>render(e.target.value.trim());$('#topic-dialog').showModal();}
-function showAbout(){const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('aboutTitle'))}</h2><p>${esc(t('aboutBody'))}</p><p>${esc(t('aboutNote'))}</p><p class="hint">${esc(t('sources'))}:<br><a href="https://madeforthismoment.asahq.org/anesthesia-101/" target="_blank" rel="noopener">${esc(t('sourceASA'))}</a><br><a href="https://anesth.or.jp/users/english/for_patients/patient_guide" target="_blank" rel="noopener">${esc(t('sourceJapan'))}</a></p><p class="hint">${esc(t('independent'))}</p>`;$('#topic-dialog').showModal();}
+function showIndex(){if(moving)return;$('#topic-dialog').classList.remove('wide-dialog');const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('searchTitle'))}</h2><input class="search" type="search" aria-label="${esc(t('searchPlaceholder'))}" placeholder="${esc(t('searchPlaceholder'))}"><div id="results"></div>`;const render=q=>{const results=$('#results');results.innerHTML='';const matches=ui().topics.map((topic,i)=>({topic,i})).filter(({topic})=>topic.flat(2).join(' ').toLocaleLowerCase().includes(q.toLocaleLowerCase()));if(!matches.length){results.append(textElement('p',t('noResults')));return}matches.forEach(({i})=>{const b=document.createElement('button');b.className='listbutton';b.append(textElement('span',`${i+1}. ${topicName(i)}`),textElement('small',t(seen.has(i)?'visited':'explore')));b.onclick=()=>{$('#topic-dialog').close();visit(i)};results.append(b)})};render('');root.querySelector('input').oninput=e=>render(e.target.value.trim());$('#topic-dialog').showModal();}
+function showAbout(){$('#topic-dialog').classList.remove('wide-dialog');const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('aboutTitle'))}</h2><p>${esc(t('aboutBody'))}</p><p>${esc(t('aboutNote'))}</p><p class="hint">${esc(t('sources'))}:<br><a href="https://madeforthismoment.asahq.org/anesthesia-101/" target="_blank" rel="noopener">${esc(t('sourceASA'))}</a><br><a href="https://anesth.or.jp/users/english/for_patients/patient_guide" target="_blank" rel="noopener">${esc(t('sourceJapan'))}</a></p><p class="hint">${esc(t('independent'))}</p>`;$('#topic-dialog').showModal();}
 function renderQuiz(){const result=$('#quiz-feedback');result.textContent=quizAnswer===null?t('quizHint'):(t(quizAnswer?'quizRight':'quizTry')+' '+t('quizExplanation'));}
 $('#language-button').onclick=()=>{reopenProfile=false;showLanguages()};
 document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const needsProfile=!patient||reopenProfile;languageChosen=true;updateLanguage(b.dataset.lang);$('#language-dialog').close();reopenProfile=false;if(needsProfile)openPatientForm()});
 $('#language-dialog').addEventListener('cancel',e=>{if(!languageChosen||reopenProfile)e.preventDefault()});
 $('#close-patient').onclick=()=>{$('#patient-dialog').close();draft=null;pendingStation=null};
 $('#close-topic').onclick=()=>$('#topic-dialog').close();$('#topic-dialog').onclick=e=>{if(e.target===$('#topic-dialog'))$('#topic-dialog').close()};
-$('#next-station').onclick=()=>{if(!patient)openPatientForm();else visit((currentStation+1)%8)};
+$('#next-station').onclick=()=>{if(!patient)openPatientForm();else visit(seen.size===0?0:(currentStation+1)%totalStops)};
 $('#index-button').onclick=showIndex;$('#about-button').onclick=showAbout;
 $('#walk-animation').onchange=e=>{animateWalking=e.target.checked};
 $('#quiz-yes').onclick=()=>{quizAnswer=false;renderQuiz()};$('#quiz-no').onclick=()=>{quizAnswer=true;renderQuiz()};
