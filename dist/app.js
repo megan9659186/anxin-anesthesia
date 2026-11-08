@@ -24,9 +24,9 @@ function renderMap(){
  houses.forEach(([x,y],i)=>{
   $('#plots').insertAdjacentHTML('beforeend',`<path id="plot-${i}" class="plot${currentStation===i&&patient?' active':''}" fill="${colors[i]}" d="M${x} ${y-50}l104 60-104 60-104-60Z"/>`);
   const g=document.createElementNS(svgNS,'g');g.setAttribute('class','house');g.setAttribute('data-station',i);g.setAttribute('transform',`translate(${x} ${y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t('station',{n:i+1})+': '+topicName(i));g.innerHTML=building(i)+`<circle cx="-44" cy="-9" r="13" fill="#557b66"/><text class="station-number" x="-44" y="-4">${i+1}</text>`;
-  const name=topicName(i);let lines=[name];if(name.length>19&&name.includes(' ')){let parts=name.split(' '),line='';lines=[];parts.forEach(word=>{if((line+' '+word).trim().length>19&&line){lines.push(line);line=word}else line=(line+' '+word).trim()});if(line)lines.push(line)}
+  const name=topicName(i);let lines=[name];if(name.includes('（')){const split=name.indexOf('（');lines=[name.slice(0,split),name.slice(split)]}else if(name.length>19&&name.includes(' ')){let parts=name.split(' '),line='';lines=[];parts.forEach(word=>{if((line+' '+word).trim().length>19&&line){lines.push(line);line=word}else line=(line+' '+word).trim()});if(line)lines.push(line)}
   lines.forEach((line,j)=>g.append(svgText(line,0,37+j*14,'station-label')));
-  g.append(svgText(ui().phases[phaseFor(i)],0,lines.length>1?67:52,'station-sublabel'));
+  g.append(svgText(ui().phases[phaseFor(i)],0,37+lines.length*14+4,'station-sublabel'));
   g.addEventListener('click',()=>visit(i));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();visit(i)}});$('#houses').append(g);
   if(i<totalStops-1){const a=route[i],b=route[i+1],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,angle=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;$('#route-arrows').insertAdjacentHTML('beforeend',`<path d="M-4-3L2 0L-4 3" fill="none" stroke="#6a8969" stroke-width="2" transform="translate(${mx} ${my}) rotate(${angle})"/>`)}
  });
