@@ -31,3 +31,5 @@ body{background:#f7f7e9}.intro .eyebrow{color:#bf7959}.intro h1{color:#285e59}.m
 .island-passport{grid-column:1/-1;min-width:0}.passport-stamp{line-height:1;min-height:0}.passport-stamp span{line-height:1}
 
 .walking .leg-left,.walking .arm-right{animation-duration:.56s}.walking .leg-right,.walking .arm-left{animation-duration:.56s}.walking .little-body{animation-duration:.28s}
+
+.preop-catalog .hospital-catalog{margin-top:20px;padding-top:20px}.care-concerns{border:1px solid #ccd9c7;border-radius:10px;padding:16px;margin:24px 0}.care-concerns>summary{font-size:calc(15px * var(--text-scale));font-weight:700;cursor:pointer}.care-concerns[open]>summary{margin-bottom:18px}
