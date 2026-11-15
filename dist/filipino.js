@@ -28,3 +28,10 @@ for(const [code,label] of Object.entries(GUIDE_TEXT)) LANGUAGES[code].preopGuide
 
 const START_TEXT={'zh-Hant':'出發',en:'Start',id:'Mulai',th:'เริ่มเลย',vi:'Bắt đầu',fil:'Simulan'};
 for(const [code,label] of Object.entries(START_TEXT)){LANGUAGES[code].begin=label;LANGUAGES[code].create=label;delete LANGUAGES[code].independent;}
+
+// Six stops: remove the pain garden from every translation.
+for(const pack of Object.values(LANGUAGES))pack.topics.splice(3,1);
+const SIX_STOP_ARIA={'zh-Hant':'六個依序編號的麻醉照護站',en:'Six numbered anesthesia care stops',id:'Enam pos perawatan anestesi bernomor',th:'จุดดูแลการระงับความรู้สึก 6 จุด',vi:'Sáu trạm chăm sóc gây mê được đánh số',fil:'Anim na istasyon ng pangangalaga sa anesthesia'};
+for(const [code,label] of Object.entries(SIX_STOP_ARIA))LANGUAGES[code].mapAria=label;
+
+const FINISH_SIX={'zh-Hant':'查看回家提醒 →',en:'Review going-home tips →',id:'Lihat petunjuk pulang →',th:'ดูคำแนะนำกลับบ้าน →',vi:'Xem nhắc nhở khi về nhà →',fil:'Tingnan ang paalala sa pag-uwi →'};for(const [code,label] of Object.entries(FINISH_SIX))LANGUAGES[code].finish=label;

@@ -5,11 +5,11 @@ let language = 'zh-Hant', languageChosen = false, patient = null, draft = null;
 let currentStation = 0, currentTopic = null, moving = false, pendingStation = null, reopenProfile = false;
 let phase = 'all', seen = new Set(), quizAnswer = null;
 let patientPoint = [350,300], animateWalking = true;
-const houses = [[280,260],[470,155],[670,260],[760,380],[570,490],[370,490],[180,380]];
+const houses = [[280,260],[470,155],[670,260],[570,490],[370,490],[180,380]];
 const totalStops=houses.length;
 const route = houses.map(([x,y]) => [x,y+60]);
-const parking = [[410,280],[595,185],[540,275],[630,380],[650,470],[495,460],[305,385]];
-const phaseFor = i => i < 2 ? 1 : i < 4 ? 2 : 3;
+const parking = [[410,280],[595,185],[540,275],[650,470],[495,460],[305,385]];
+const phaseFor = i => i < 2 ? 1 : i < 3 ? 2 : 3;
 const colors = ['#cbdcae','#e7ce9c','#c1d7b9','#b9d5c5','#e8c19d','#d8d7b0','#c9cca2','#b9d3bc'];
 const ui = () => LANGUAGES[language];
 const t = (key, values = {}) => String(ui()[key]).replace(/\{(\w+)\}/g, (_, k) => values[k] ?? '');
@@ -24,7 +24,7 @@ function renderMap(){
  $('#plots').innerHTML='';$('#houses').innerHTML='';$('#route-arrows').innerHTML='';
  houses.forEach(([x,y],i)=>{
   $('#plots').insertAdjacentHTML('beforeend',`<path id="plot-${i}" class="plot${currentStation===i&&patient?' active':''}" fill="${colors[i]}" d="M${x} ${y-50}l104 60-104 60-104-60Z"/>`);
-  const g=document.createElementNS(svgNS,'g');g.setAttribute('class','house');g.setAttribute('data-station',i);g.setAttribute('transform',`translate(${x} ${y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t('station',{n:i+1})+': '+topicName(i));g.innerHTML=building(i)+`<circle cx="-44" cy="-9" r="13" fill="#557b66"/><text class="station-number" x="-44" y="-4">${i+1}</text>`;
+  const g=document.createElementNS(svgNS,'g');g.setAttribute('class','house');g.setAttribute('data-station',i);g.setAttribute('transform',`translate(${x} ${y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t('station',{n:i+1})+': '+topicName(i));g.innerHTML=building(i)+(seen.has(i)?'<g class="visited-seal" transform="translate(54 -31)"><circle r="13" fill="#eeb85e"/><path d="M-6 0l4 4 8-9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>':'')+`<circle cx="-44" cy="-9" r="13" fill="#557b66"/><text class="station-number" x="-44" y="-4">${i+1}</text>`;
   const name=topicName(i);let lines=[name];if(name.includes('（')||name.includes(' (')){const split=name.includes('（')?name.indexOf('（'):name.indexOf(' (');lines=[name.slice(0,split),name.slice(split).trim()]}else if(name.length>19&&name.includes(' ')){let parts=name.split(' '),line='';lines=[];parts.forEach(word=>{if((line+' '+word).trim().length>19&&line){lines.push(line);line=word}else line=(line+' '+word).trim()});if(line)lines.push(line)}
   const lineGap=14*(Number(document.documentElement.style.getPropertyValue('--text-scale'))||1.15);lines.forEach((line,j)=>g.append(svgText(line,0,37+j*lineGap,'station-label')));
   g.append(svgText(ui().phases[phaseFor(i)],0,37+lines.length*lineGap+4,'station-sublabel'));
@@ -35,7 +35,7 @@ function renderMap(){
  $('#phases').innerHTML='';ui().phases.forEach((name,i)=>{const b=textElement('button',name,phase===(i?String(i):'all')?'active':'');b.dataset.phase=i?String(i):'all';b.setAttribute('aria-pressed',b.classList.contains('active'));b.onclick=()=>{phase=b.dataset.phase;applyPhase()};$('#phases').append(b)});applyPhase();
 }
 function applyPhase(){document.querySelectorAll('.house').forEach(el=>{const match=phase==='all'||String(phaseFor(+el.dataset.station))===phase;el.style.opacity=match?'1':'.28'});document.querySelectorAll('[data-phase]').forEach(b=>{const active=b.dataset.phase===phase;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active)})}
-function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();if(document.querySelector('.font-controls'))updateFontControls();if(patient)positionPatient(patientPoint);}
+function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();renderPassport();if(document.querySelector('.font-controls'))updateFontControls();if(patient)positionPatient(patientPoint);}
 function updateProgress(){ $('#progress-bar').style.width=(seen.size/totalStops*100)+'%';$('#progress-text').textContent=t('progress',{n:seen.size,total:totalStops});}
 function renderPatient(){
  updatePreopGuide();
@@ -54,12 +54,9 @@ function setWalking(on,target){moving=on;$('#patient-marker').classList.toggle('
 function animateSegment(target){const start=[...patientPoint];const distance=Math.hypot(target[0]-start[0],target[1]-start[1]);const duration=reducedMotion()?0:Math.max(450,distance*4.6);return new Promise(resolve=>{let begin;function frame(now){if(begin===undefined)begin=now;const p=duration===0?1:Math.min(1,(now-begin)/duration);positionPatient([start[0]+(target[0]-start[0])*p,start[1]+(target[1]-start[1])*p]);if(p<1)requestAnimationFrame(frame);else resolve()}requestAnimationFrame(frame)});}
 async function visit(i){
  if(moving)return;if(!patient){pendingStation=i;openPatientForm();return}
- if(i!==currentStation){setWalking(true,i);if(window.innerWidth<=640){const scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,patientPoint[0]/820*$('#island').getBoundingClientRect().width-scroll.clientWidth/2),behavior:'smooth'})}
-  await animateSegment(route[currentStation]);const forward=(i-currentStation+totalStops)%totalStops,backward=(currentStation-i+totalStops)%totalStops,step=forward<=backward?1:-1;let n=currentStation;
-  while(n!==i){n=(n+step+totalStops)%totalStops;await animateSegment(route[n]);if(window.innerWidth<=640){const box=$('#island').getBoundingClientRect(),scroll=$('.map-scroll');scroll.scrollTo({left:Math.max(0,(patientPoint[0]-80)/820*box.width-scroll.clientWidth/2),behavior:reducedMotion()?'auto':'smooth'})}}
-  await animateSegment(parking[i]);currentStation=i;setWalking(false,i);
- }
- seen.add(i);renderPatient();updateProgress();document.querySelectorAll('.plot').forEach((p,j)=>p.classList.toggle('active',i===j));openTopic(i);
+ if(i!==currentStation){setWalking(true,i);await animateSegment(parking[i]);currentStation=i;setWalking(false,i);}
+ const firstVisit=!seen.has(i);
+ seen.add(i);renderPatient();updateProgress();renderPassport();if(firstVisit)celebrateArrival(i);document.querySelectorAll('.plot').forEach((p,j)=>p.classList.toggle('active',i===j));openTopic(i);
 }
 function openTopic(i){
  currentTopic=i;const topic=ui().topics[i],root=$('#topic-content');root.innerHTML='';$('#topic-dialog').classList.toggle('wide-dialog',i===0||i===1||i===2);if(i===1){renderMethodGallery(root);if(!$('#topic-dialog').open)$('#topic-dialog').showModal();$('#topic-dialog').scrollTop=0;return}if(i===2){renderOperatingRoom(root);if(!$('#topic-dialog').open)$('#topic-dialog').showModal();$('#topic-dialog').scrollTop=0;return}
@@ -87,7 +84,7 @@ document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const needsPr
 $('#language-dialog').addEventListener('cancel',e=>{if(!languageChosen||reopenProfile)e.preventDefault()});
 $('#close-patient').onclick=()=>{$('#patient-dialog').close();draft=null;pendingStation=null};
 $('#close-topic').onclick=()=>$('#topic-dialog').close();$('#topic-dialog').onclick=e=>{if(e.target===$('#topic-dialog'))$('#topic-dialog').close()};
-$('#next-station').onclick=()=>{if(!patient)openPatientForm();else visit(seen.size===0?0:(currentStation+1)%totalStops)};
+$('#next-station').onclick=()=>{if(!patient)openPatientForm();else visit(seen.size===0?0:Math.min(currentStation+1,totalStops-1))};
 $('#index-button').onclick=showIndex;$('#about-button').onclick=showAbout;
 $('#walk-animation').onchange=e=>{animateWalking=e.target.checked};
 $('#quiz-yes').onclick=()=>{quizAnswer=false;renderQuiz()};$('#quiz-no').onclick=()=>{quizAnswer=true;renderQuiz()};
