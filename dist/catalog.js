@@ -1,5 +1,5 @@
 'use strict';
-const catalogUI=()=>CATALOG_UI[language];
+const catalogUI=()=>isExamination()?{...examReword(CATALOG_UI[language],language),surgery:CATALOG_UI[language].surgery}:CATALOG_UI[language];
 const catalogItem=id=>HOSPITAL_CATALOG.find(item=>item.id===id||item.code===id);
 const catalogName=item=>language==='zh-Hant'?item.zh:CATALOG_NAMES[language][HOSPITAL_CATALOG.indexOf(item)];
 function surgeryName(){return SURGERY_NAMES[language][SURGERY_IDS.indexOf(patient?.surgery||'V')];}

@@ -5,13 +5,13 @@ let language = 'zh-Hant', languageChosen = false, patient = null, draft = null;
 let currentStation = 0, currentTopic = null, moving = false, pendingStation = null, reopenProfile = false;
 let phase = 'all', seen = new Set(), quizAnswer = null;
 let patientPoint = [350,300], animateWalking = true;
-const houses = [[280,260],[470,155],[670,260],[570,490],[370,490],[180,380]];
-const totalStops=houses.length;
-const route = houses.map(([x,y]) => [x,y+60]);
-const parking = [[410,280],[595,185],[540,275],[650,470],[495,460],[305,385]];
+let houses = [[280,260],[470,155],[670,260],[570,490],[370,490],[180,380]];
+let totalStops=houses.length;
+let route = houses.map(([x,y]) => [x,y+60]);
+let parking = [[410,280],[595,185],[540,275],[650,470],[495,460],[305,385]];
 const phaseFor = i => i < 2 ? 1 : i < 3 ? 2 : 3;
 const colors = ['#cbdcae','#e7ce9c','#c1d7b9','#b9d5c5','#e8c19d','#d8d7b0','#c9cca2','#b9d3bc'];
-const ui = () => LANGUAGES[language];
+const ui = () => journeyPack(language,LANGUAGES[language]);
 const t = (key, values = {}) => String(ui()[key]).replace(/\{(\w+)\}/g, (_, k) => values[k] ?? '');
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const reducedMotion = () => !animateWalking;
@@ -23,7 +23,7 @@ function avatar(){const cloth='patient-uniform-'+(++uniformSerial);return `<defs
 function building(i) { const c=['#f8f4df','#e5b28d','#91b4a4','#eee4bd'][i%4];return `<g transform="translate(-29 -43)"><path d="M0 20L30 3L63 22L33 40Z" fill="#597e68" opacity=".13" transform="translate(0 35)"/><path d="M4 15L30 0L59 16V50L32 66L4 50Z" fill="${c}"/><path d="M32 31L59 16V50L32 66Z" fill="#000" opacity=".09"/><path class="roof" d="M-2 15L30-5L65 15L32 35Z" fill="${i%2?'#719483':'#c88c6d'}"/><path d="M19 35V49L27 54V40Z M39 39V49L48 44V34Z" fill="#517e76"/><path d="M11 33V41L16 44V36Z" fill="#fff9"/>${i===3?'<path d="M25 4h10m-5-5v10" stroke="#fff" stroke-width="3"/>':''}</g>`; }
 function svgText(text,x,y,cls){const el=document.createElementNS(svgNS,'text');el.setAttribute('x',x);el.setAttribute('y',y);el.setAttribute('class',cls);el.textContent=text;return el;}
 function renderMap(){
- $('#plots').innerHTML='';$('#houses').innerHTML='';$('#route-arrows').innerHTML='';
+ const road=route.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join('')+'Z';document.querySelectorAll('.island-road').forEach(el=>el.setAttribute('d',road));$('#plots').innerHTML='';$('#houses').innerHTML='';$('#route-arrows').innerHTML='';
  houses.forEach(([x,y],i)=>{
   $('#plots').insertAdjacentHTML('beforeend',`<path id="plot-${i}" class="plot${currentStation===i&&patient?' active':''}" fill="${colors[i]}" d="M${x} ${y-50}l104 60-104 60-104-60Z"/>`);
   const g=document.createElementNS(svgNS,'g');g.setAttribute('class','house');g.setAttribute('data-station',i);g.setAttribute('transform',`translate(${x} ${y})`);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',t('station',{n:i+1})+': '+topicName(i));g.innerHTML=building(i)+(seen.has(i)?'<g class="visited-seal" transform="translate(54 -31)"><circle r="13" fill="#eeb85e"/><path d="M-6 0l4 4 8-9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>':'')+`<circle cx="-44" cy="-9" r="13" fill="#557b66"/><text class="station-number" x="-44" y="-4">${i+1}</text>`;
@@ -37,7 +37,7 @@ function renderMap(){
  $('#phases').innerHTML='';ui().phases.forEach((name,i)=>{const b=textElement('button',name,phase===(i?String(i):'all')?'active':'');b.dataset.phase=i?String(i):'all';b.setAttribute('aria-pressed',b.classList.contains('active'));b.onclick=()=>{phase=b.dataset.phase;applyPhase()};$('#phases').append(b)});applyPhase();
 }
 function applyPhase(){document.querySelectorAll('.house').forEach(el=>{const match=phase==='all'||String(phaseFor(+el.dataset.station))===phase;el.style.opacity=match?'1':'.28'});document.querySelectorAll('[data-phase]').forEach(b=>{const active=b.dataset.phase===phase;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active)})}
-function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();renderPassport();if(document.querySelector('.font-controls'))updateFontControls();if(patient)positionPatient(patientPoint);}
+function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;queueMicrotask(updateOrientationPrompt);$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();renderPassport();if(document.querySelector('.font-controls'))updateFontControls();if(patient)positionPatient(patientPoint);}
 function updateProgress(){ $('#progress-bar').style.width=(seen.size/totalStops*100)+'%';$('#progress-text').textContent=t('progress',{n:seen.size,total:totalStops});}
 function renderPatient(){
  updatePreopGuide();
@@ -74,7 +74,7 @@ function openPatientForm(){
  $('#form-language').onclick=()=>{draft=collectDraft();reopenProfile=true;$('#patient-dialog').close();showLanguages()};
  const form=$('#patient-form');form.elements.name.oninput=()=>form.elements.name.setCustomValidity('');
  form.querySelectorAll('[name=disease]').forEach(box=>box.onchange=()=>{form.querySelector('[name=disease]').setCustomValidity('');if(!box.checked)return;form.querySelectorAll('[name=disease]').forEach(other=>{if(other!==box&&(Number(box.value)>=8||Number(other.value)>=8))other.checked=false})});
- form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}if(!patient||patient.surgery!==value.surgery)careState.method=value.surgery==='GI01'?2:0;applySurgeryPreset(value.surgery);patient=value;$('#patient-dialog').close();renderPatient();positionPatient(parking[currentStation]);pendingStation=null;$('#location').textContent=careText().visit};
+ form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}if(!patient||patient.surgery!==value.surgery){careState.method=isExamination(value.surgery)?2:0;careState.examStage='upper';}applySurgeryPreset(value.surgery);patient=value;configureJourney();updateLanguage(language);$('#patient-dialog').close();renderPatient();positionPatient(parking[currentStation]);pendingStation=null;$('#location').textContent=careText().visit};
  if(!$('#patient-dialog').open)$('#patient-dialog').showModal();$('#patient-dialog').scrollTop=0;
 }
 function showLanguages(){if(moving)return;$('#language-dialog').showModal();$('#language-dialog').scrollTop=0;}
