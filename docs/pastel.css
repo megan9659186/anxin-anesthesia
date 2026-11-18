@@ -1,0 +1,140 @@
+/* 粉彩可愛童趣風格：覆寫 style.css 的配色、圓角與字體。只改外觀，不動版面結構。 */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap');
+:root{
+ --ink:#5a4868;--ink-soft:#8a7898;--paper:#fff8fb;
+ --pink:#f9c6d3;--pink-deep:#ec8fab;--pink-pale:#fde8ef;
+ --lav:#ddd2f5;--lav-deep:#a893d8;--mint:#c9eedf;--mint-deep:#7fc9ad;
+ --peach:#ffdcc4;--butter:#fff1b8;--sky:#d3eafb;--sky-deep:#8cc3ea;
+ --card:#ffffff;--line:#f3d5e0;--shadow:0 10px 30px #d68aa526;
+ --round:'M PLUS Rounded 1c','Noto Sans TC','Noto Sans Thai',sans-serif;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--round)}
+button,input,select{font-family:var(--round)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--pink-deep)}
+
+/* 頁首 */
+header{background:#fffdfeee;border-bottom:2px dashed var(--line)}
+.brand>span{border:0;background:linear-gradient(135deg,var(--pink),var(--lav));color:#fff;box-shadow:0 3px 0 #e7a9bf}
+.brand b{color:var(--ink)}
+.nav button{color:var(--ink)}
+.nav #language-button,#music-button{background:var(--pink-pale);border:2px solid var(--pink);border-radius:999px;padding:7px 14px;font-weight:700}
+/* 背景音樂開關：固定在畫面右下角，捲到哪裡都按得到 */
+#music-button{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;align-items:center;gap:6px;min-height:44px;background:var(--mint);border-color:#a9dfca;font-size:calc(12px * var(--text-scale,1.15));cursor:pointer;box-shadow:0 6px 18px #6fae9640}
+#music-button.is-off{background:#fff;border-color:#d9d0e6;color:var(--ink-soft)}
+#music-button .music-state{font-size:calc(10px * var(--text-scale,1.15));padding:2px 8px;border-radius:999px;background:#fff;color:#3f7d66}
+#music-button.is-off .music-state{background:#f2eef6;color:var(--ink-soft)}
+/* 自費品項卡片上的簡介 */
+.catalog-explain{display:block;margin-top:6px;line-height:1.75;font-size:calc(11.5px * var(--text-scale,1.15));color:var(--ink-soft);font-weight:400}
+
+/* 首頁大背景：粉紅、薰衣草、天空藍的柔和漸層，加上小圓點 */
+main{background:radial-gradient(circle at 12% 18%,#ffe3ec 0 14%,transparent 15%),radial-gradient(circle at 88% 12%,#e6defb 0 11%,transparent 12%),radial-gradient(ellipse at 45% 60%,#e3f1fd 0,#f4ecfb 55%,#fff6f9 95%)}
+.eyebrow{color:var(--pink-deep)}
+.intro h1{color:var(--ink)}
+.intro>p,.instruction{color:var(--ink-soft)}
+.instruction>span:first-child{border:2px solid var(--pink);background:#fff;color:var(--pink-deep)}
+
+/* 地圖面板 */
+.map-panel{background:linear-gradient(150deg,#dff0fd,#f1eafc 55%,#ffeef4);border:3px solid #fff;box-shadow:var(--shadow);border-radius:32px}
+.map-heading{color:var(--ink-soft)}
+.map-heading>span:first-child{color:var(--lav-deep)}
+.coastlabel{fill:var(--sky-deep)}
+.water{stroke:#fff;opacity:.85}
+.house text{fill:var(--ink)}
+.house .station-sublabel{fill:var(--pink-deep)}
+.plot.active{stroke:#fff;filter:brightness(1.04) drop-shadow(0 0 6px #ffffffcc)}
+.patient-marker text{fill:var(--ink)}
+.phase-controls{background:#ffffffe8;border:2px solid #fff;box-shadow:0 6px 20px #c99ab522}
+.phase-controls button{color:var(--ink);font-weight:700}
+.phase-controls button.active{background:linear-gradient(135deg,var(--pink-deep),#c9a1e6);color:#fff;box-shadow:0 3px 0 #c97b98}
+
+/* 右側旅程卡 */
+.journey{background:#fff;border:3px solid var(--pink-pale);border-radius:28px;box-shadow:var(--shadow)}
+.progress{background:var(--pink-pale);height:8px;border-radius:99px;overflow:hidden}
+.progress i{background:linear-gradient(90deg,var(--pink-deep),var(--lav-deep));border-radius:99px}
+.island-passport{border:2px dashed #f2c3d3;background:linear-gradient(140deg,#fff3f7,#f3effd)}
+.passport-stamp{border-color:#e9c4d3;background:#fff;color:var(--ink-soft)}
+.island-passport h3{color:var(--ink)}
+.passport-heading>span{color:var(--pink-deep)}
+.passport-stamp.collected{background:var(--pink-deep);border-color:#e47a9b;color:#fff;box-shadow:0 2px 0 #c96282}
+.mission-button{background:#fff;border:2px solid var(--lav);color:var(--ink)}
+.mission-button:hover{background:#f6f1ff}
+
+/* 按鈕 */
+.primary{background:linear-gradient(135deg,var(--pink-deep),#d49bd8);border-radius:999px;font-weight:700;box-shadow:0 4px 0 #c97b98;letter-spacing:1px}
+.primary:hover{filter:brightness(1.05)}
+.primary:active{translate:0 2px;box-shadow:0 2px 0 #c97b98}
+.primary:disabled{background:#d8c7d6;box-shadow:none}
+.secondary,.related button,.answers button,.exam-stages button,.rotate-continue{background:#fff;border:2px solid var(--lav);border-radius:999px;color:var(--ink)}
+.exam-stages button[aria-pressed=true]{background:var(--lav-deep);border-color:var(--lav-deep);color:#fff}
+.font-controls button{border:2px solid var(--lav);border-radius:14px;background:#fff;color:var(--ink)}
+.close{border:2px solid var(--pink);color:var(--pink-deep);background:#fff}
+
+/* 對話框與卡片 */
+dialog{background:var(--paper);border-radius:28px;box-shadow:0 20px 60px #b07a9840}
+dialog::backdrop{background:#7a5e8a55;backdrop-filter:blur(6px)}
+.language-icon{border:0;background:linear-gradient(135deg,var(--pink),var(--lav));color:#fff}
+.language-options button{background:#fff;border:2px solid var(--pink-pale);border-radius:18px}
+.language-options button:hover{background:var(--pink-pale);border-color:var(--pink)}
+.patient-form input[type=text],.patient-form input[type=number],.patient-form select,.search,.catalog-search{border:2px solid var(--lav);border-radius:14px;background:#fff}
+.patient-form fieldset,.care-conditions,.care-concerns{border:2px solid var(--pink-pale);border-radius:18px}
+.tip,.arrival,.data-summary{background:linear-gradient(135deg,#fff1d6,#ffe6ee);border-radius:16px}
+.station-chip{color:var(--pink-deep)}
+.visitor-banner{background:linear-gradient(135deg,#e4f6ee,#eef0ff);border-radius:22px}
+.care-item,.catalog-card,.selected-visual-grid article,.medicine-card{background:#fff;border:2px solid var(--pink-pale);border-radius:16px}
+.catalog-card:has(input:checked){background:#fff0f5;border-color:var(--pink)}
+.care-badge{background:var(--mint);color:#3f7d66}
+.bundle-panel{background:linear-gradient(135deg,#fff4f8,#f4f0ff);border:2px solid var(--pink-pale);border-radius:22px}
+.catalog-category{background:#fff;border:2px solid #efe8fa;border-radius:16px}
+.catalog-overlap{background:#fff6dc;border-left-color:#f2c86a}
+.team-card{background:#fff;border:2px solid var(--lav);border-radius:20px}
+.operating-room-v2 .room-illustration{background:#f7f3fd;border:3px solid #fff;border-radius:24px;box-shadow:var(--shadow)}
+.monitor-panel,.choices-panel{background:#fff;border:2px solid var(--pink-pale);border-radius:20px}
+.monitor-key b,.room-legend li b{border:2px solid var(--pink);background:#fff;color:var(--pink-deep)}
+.selected-visuals{background:#fdf8ff;border-top:2px dashed var(--line)}
+.listbutton{border-bottom:1px dashed var(--line)}
+
+/* 術前評估所：麻醉方式說明 */
+.care-method-note{display:flex;gap:12px;align-items:flex-start;margin:22px 0;padding:18px 20px;background:linear-gradient(135deg,#fff0f5,#f1ecff);border:2px solid var(--pink-pale);border-radius:20px}
+.care-method-note span{font-size:calc(20px * var(--text-scale,1.15));line-height:1.4}
+.care-method-note p{margin:0;line-height:1.9;font-size:calc(13px * var(--text-scale,1.15));font-weight:500}
+
+/* 麻醉選擇館：依科別預設與四張介紹卡 */
+.method-plan{background:linear-gradient(135deg,#fff3f7,#eef6ff);border:2px solid var(--pink-pale);border-radius:22px}
+.method-plan h3{margin:0 0 8px;font-size:calc(13px * var(--text-scale,1.15));color:var(--ink-soft)}
+.method-plan-result{margin:0;font-size:calc(19px * var(--text-scale,1.15));font-weight:800;color:var(--pink-deep)}
+.method-plan .hint{margin:8px 0 0}
+.method-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0 26px}
+.method-card{position:relative;padding:18px 18px 16px;background:#fff;border:2px solid #efe8fa;border-radius:22px;box-shadow:0 6px 18px #b49ad018}
+.method-card.is-fit{border-color:var(--pink);background:linear-gradient(160deg,#fff,#fff2f6)}
+.method-card-head{display:flex;align-items:center;gap:10px}
+.method-card h4{margin:0;font-size:calc(15px * var(--text-scale,1.15))}
+.method-card p{margin:10px 0 0;line-height:1.85;font-size:calc(12.5px * var(--text-scale,1.15))}
+.method-card .method-number{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--lav);color:#fff;font-weight:800;font-size:calc(11px * var(--text-scale,1.15))}
+.method-card.is-fit .method-number{background:var(--pink-deep)}
+.method-fit{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:999px;background:var(--pink-pale);color:var(--pink-deep);font-weight:700;font-size:calc(10.5px * var(--text-scale,1.15))}
+
+/* 推床到恢復室 */
+.transfer .little-body{animation:none}
+.walking.transfer .leg-left,.walking.transfer .leg-right{animation:stride .36s ease-in-out infinite alternate}
+.walking.transfer .leg-right{animation-direction:alternate-reverse}
+.transfer-zz{animation:zz 1.6s ease-in-out infinite}
+@keyframes zz{0%,100%{opacity:.3;translate:0 0}50%{opacity:1;translate:3px -4px}}
+@media(prefers-reduced-motion:reduce){.transfer-zz{animation:none}}
+
+/* 「點這裡」引導、抵達時的彩色紙花、直式提示視窗 */
+.guide-bubble{fill:#fff;stroke:var(--pink-deep);filter:drop-shadow(0 4px 7px #c97b9830)}
+.preop-guide text{fill:#d0628a}
+.guide-arrow path{fill:var(--pink-deep);stroke:#fff}
+.guide-target{stroke:var(--pink-deep)}
+.preop-guide:focus-visible .guide-bubble{stroke:var(--ink)}
+.arrival-sparkles i{color:#f39bb8}
+.arrival-sparkles i:nth-child(3n){color:#b9a3e6}
+.arrival-sparkles i:nth-child(3n+1){color:#8fd3b9}
+#rotate-dialog{background:var(--paper);border:3px solid var(--pink-pale)}
+#rotate-dialog::backdrop{background:#7a5e8a99}
+.rotate-phone{border-color:var(--lav-deep);background:#f1ecff}
+.rotate-phone:after{background:var(--lav-deep)}
+.rotate-phone span{color:var(--pink-deep)}
+.rotate-description,.rotate-english{color:var(--ink-soft)}
+
+footer{color:var(--ink-soft)}

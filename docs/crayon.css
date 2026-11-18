@@ -1,0 +1,76 @@
+/* 蠟筆繪本畫風：圖畫紙底、手寫標題字、像蠟筆描出來的歪歪外框。載在 pastel.css 後面。 */
+@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap');
+:root{
+ --hand:'LXGW WenKai TC','M PLUS Rounded 1c','Noto Sans TC',sans-serif;
+ --crayon-ink:#4a3a32;
+ --sketch:255px 18px 225px 16px/16px 225px 18px 255px;
+ --paper-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .35  0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* 圖畫紙 */
+body{background-color:#fffcf3;background-image:var(--paper-grain)}
+main{background:var(--paper-grain),linear-gradient(180deg,#d6ecfb 0,#eaf5fd 30%,#fffcf3 75%)}
+header{background:#fffcf3ee;background-image:var(--paper-grain)}
+dialog{background-color:#fffcf3;background-image:var(--paper-grain)}
+
+/* 手寫標題字 */
+h1,h2,h3,h4,.brand b,.house text,.station-label,.phase-controls button,.primary,.method-plan-result,.passport-heading h3{font-family:var(--hand)}
+.intro h1{color:var(--crayon-ink);letter-spacing:3px}
+.house text{fill:var(--crayon-ink);paint-order:stroke;stroke:#fffcf3;stroke-width:3px;stroke-linejoin:round}
+.house .station-sublabel{fill:#d2557f}
+
+/* 地圖面板：一張貼在牆上的圖畫紙 */
+.map-panel{background:#fffef8;background-image:var(--paper-grain);border:3px solid #e8dcc4;border-radius:var(--sketch);box-shadow:4px 6px 0 #e9dcc2,0 14px 30px #b49a7020}
+.map-heading>span:first-child{color:#e8504a}
+.coastlabel{fill:#3f86c4;font-family:var(--hand)}
+
+/* 卡片和框：歪歪的蠟筆外框 */
+.journey,.monitor-panel,.choices-panel,.method-card,.method-plan,.bundle-panel,.care-method-note,.visitor-banner,.team-card,.catalog-category,.island-passport{border-radius:var(--sketch)}
+.journey{border:3px solid #f2c9a0;box-shadow:3px 5px 0 #f6dcc0}
+.method-card{border:2.5px solid #cfe0f2;box-shadow:3px 4px 0 #e3eef9}
+.method-card.is-fit{border-color:#f39bb8;box-shadow:3px 4px 0 #fbd3df}
+.catalog-card{border-radius:14px 20px 12px 22px/20px 12px 22px 14px}
+.operating-room-v2 .room-illustration{border-radius:var(--sketch);border:3px solid #e8dcc4;background:#fffef8}
+.primary{border-radius:28px 34px 26px 36px/34px 26px 36px 28px;background:linear-gradient(135deg,#f07a9a,#f6a75e);box-shadow:0 4px 0 #c9604a}
+.primary:active{box-shadow:0 2px 0 #c9604a}
+.phase-controls button.active{background:linear-gradient(135deg,#f07a9a,#f6a75e);box-shadow:0 3px 0 #c9604a}
+.passport-stamp.collected{background:#f6a75e;border-color:#e0843a;box-shadow:0 2px 0 #c9604a}
+
+/* 推床時不要把整組人物翻面 */
+.transfer.facing-left .little-body{transform:none}
+
+/* 一起認識麻醉：維持原本外觀，只多一個「下一個小知識」 */
+.learn-next{display:inline-block;margin-top:6px;padding:4px 0;border:0;background:none;color:#d2557f;font-weight:700;text-decoration:underline;text-underline-offset:4px;font-size:calc(12px * var(--text-scale,1.15));cursor:pointer}
+.mission-message{line-height:1.85}
+
+/* 房子名稱獨立在最上層 */
+.house-label{cursor:pointer;transition:opacity .2s}
+.house-label text{font-family:var(--hand);text-anchor:middle;font-size:calc(13px * var(--text-scale,1.15));font-weight:700;fill:var(--crayon-ink);paint-order:stroke;stroke:#fffcf3;stroke-width:3.5px;stroke-linejoin:round}
+.house-label .station-sublabel{font-size:calc(8px * var(--text-scale,1.15));fill:#d2557f;font-weight:500}
+/* 推床時不顯示名牌，避免擋到路旁的字 */
+.transfer #patient-tag{display:none}
+/* 「回到地圖」按鈕放大 */
+.back-map,#scene-back{font-size:calc(17px * var(--text-scale,1.15));padding:16px 20px;letter-spacing:2px}
+
+/* 房子的門：可以打開、關上 */
+.house .door{transform-box:fill-box;transform-origin:0% 50%;transition:transform .35s ease}
+.house.door-open .door{transform:scaleX(.12)}
+@media(prefers-reduced-motion:reduce){.house .door{transition:none}}
+/* 屋頂上的招牌 */
+.house-label .station-label{font-size:calc(12px * var(--text-scale,1.15))}
+.house-label .station-sublabel{font-size:calc(7.5px * var(--text-scale,1.15))}
+/* 手術室示意圖：和地圖一樣的蠟筆紙張底 */
+.operating-room-v2 .room-illustration{background-color:#fffcf3;background-image:var(--paper-grain)}
+.team-card{background-color:#fffcf3;background-image:var(--paper-grain)}
+
+/* 基本資料填好後的「出發」按鈕放大 */
+.patient-form button[type=submit]{font-size:calc(21px * var(--text-scale,1.15));padding:18px 20px;letter-spacing:4px}
+/* 手術室：點滴標示與數字對照 */
+.iv-bag-text{font-size:13px;font-weight:700;fill:#2f6a7a;font-family:inherit}
+.iv-bag-name{font-size:11px}
+.saline-label{font-size:13px;font-weight:700;fill:#2f6a7a;font-family:inherit}
+.room-callouts circle{fill:#fff;stroke:#e8504a;stroke-width:2.5}
+.room-callouts text{fill:#c43d35;font-size:16px}
+.room-callouts path{stroke:#e8504a;stroke-dasharray:4 3}
+.device-key strong{display:block;font-size:calc(13px * var(--text-scale,1.15))}
+.device-key small{display:block;font-size:calc(11px * var(--text-scale,1.15));line-height:1.75;color:var(--ink-soft)}
+.device-key b{border-color:#e8504a;color:#c43d35}

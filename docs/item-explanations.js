@@ -2,7 +2,7 @@
 // Patient-facing summaries: purpose and potential benefit, never an indication to buy.
 const ITEM_EXPLANATIONS={
 airway:[
-'協助建立與維持呼吸道，讓團隊在麻醉時更容易給氧與支持呼吸；使用方式依你的呼吸道狀況決定。',
+'協助建立與維持呼吸道，讓團隊在麻醉時更容易給予氧氣與支持呼吸；使用方式依你的呼吸道狀況決定。',
 'Helps establish and maintain an airway so the team can give oxygen and support breathing during anesthesia. The approach depends on your airway.',
 'Membantu menjaga jalan napas agar tim dapat memberi oksigen dan mendukung pernapasan selama anestesi. Caranya disesuaikan dengan kondisi Anda.',
 'ช่วยเปิดและดูแลทางเดินหายใจ เพื่อให้ทีมให้ออกซิเจนและช่วยหายใจระหว่างระงับความรู้สึก โดยปรับตามสภาพของคุณ',
@@ -16,12 +16,12 @@ oxygen:[
 'Cung cấp thêm oxy khi gây mê hoặc an thần. Thiết bị lưu lượng cao và ống mũi thông thường có cách dùng khác nhau; nhóm sẽ lựa chọn.',
 'Nagbibigay ng dagdag na oxygen habang may anesthesia o sedation. Magkaiba ang high-flow at karaniwang nasal cannula; pipili ang team ng angkop.'],
 depth:[
-'用額頭感測器讀取與腦波相關的訊號，提供調整麻醉藥的參考；需配合其他監測判讀，不能保證完全不會清醒。',
-'A forehead sensor reads brain-related signals to help guide anesthetic medicines. It is interpreted with other monitors and cannot guarantee absence of awareness.',
-'Sensor dahi membaca sinyal otak untuk membantu penyesuaian obat anestesi. Digunakan bersama pemantauan lain, bukan jaminan tidak sadar sepenuhnya.',
-'เซนเซอร์หน้าผากอ่านสัญญาณสมองเพื่อช่วยปรับยาสลบ ต้องใช้ร่วมกับการติดตามอื่น และไม่รับประกันว่าจะไม่มีการรับรู้',
-'Cảm biến trán đọc tín hiệu liên quan đến não, hỗ trợ điều chỉnh thuốc mê. Cần kết hợp theo dõi khác và không bảo đảm tuyệt đối không tỉnh.',
-'Binabasa ng sensor sa noo ang signal na kaugnay ng utak upang gabayan ang gamot. Kasama ito ng ibang monitoring at hindi garantiya laban sa awareness.'],
+'在額頭貼上感應器讀取腦波訊號，提供麻醉科醫師調整手術中麻醉藥的參考。',
+'A sensor placed on the forehead reads brain-wave signals to help the anesthesiologist adjust anesthetic medicines during surgery.',
+'Sensor yang ditempel di dahi membaca sinyal gelombang otak sebagai acuan bagi dokter anestesi untuk menyesuaikan obat bius selama operasi.',
+'ติดเซนเซอร์ที่หน้าผากเพื่ออ่านสัญญาณคลื่นสมอง ให้วิสัญญีแพทย์ใช้ประกอบการปรับยาสลบระหว่างผ่าตัด',
+'Dán cảm biến lên trán để đọc tín hiệu sóng não, giúp bác sĩ gây mê tham khảo khi điều chỉnh thuốc mê trong lúc mổ.',
+'Isang sensor sa noo ang bumabasa ng brain-wave signal para gabayan ang anesthesiologist sa pag-aayos ng gamot pampamanhid habang inooperahan.'],
 warming:[
 '以溫熱空氣與保溫毯減少熱量流失，幫助維持體溫、減少低體溫與發抖的不舒服；溫度由團隊監測調整。',
 'Warm air and a blanket reduce heat loss, helping maintain temperature and reduce discomfort from cold and shivering. The team monitors and adjusts warming.',
@@ -37,12 +37,12 @@ brain:[
 'Cảm biến đầu theo dõi oxy vùng não, giúp nhận biết thay đổi cung cấp oxy hoặc tuần hoàn. Không bảo đảm phòng tránh biến chứng não.',
 'Sinusubaybayan ng sensor sa ulo ang oxygen sa bahagi ng utak, upang mapansin ang pagbabago sa oxygen o sirkulasyon. Hindi nito ginagarantiya ang pag-iwas sa komplikasyon.'],
 coag:[
-'分析血液形成血塊的情形，協助團隊在需要時評估凝血與止血處置；全套與單次的檢測範圍、次數需確認。',
-'Assesses how blood forms a clot to help guide clotting and bleeding management when needed. Confirm the scope and number of full-set or single tests.',
-'Menilai pembentukan bekuan darah untuk membantu penanganan pembekuan dan perdarahan bila diperlukan. Pastikan cakupan dan jumlah tes paket atau sekali.',
-'ประเมินการเกิดลิ่มเลือดเพื่อช่วยวางแผนดูแลการแข็งตัวและเลือดออกเมื่อจำเป็น โปรดยืนยันขอบเขตและจำนวนของชุดตรวจหรือครั้งเดียว',
-'Đánh giá sự hình thành cục máu đông, hỗ trợ xử trí đông máu và chảy máu khi cần. Cần xác nhận phạm vi và số lần xét nghiệm.',
-'Sinusuri kung paano namumuo ang dugo upang makatulong sa pag-aalaga sa pagdurugo kung kailangan. Kumpirmahin ang saklaw at dami ng pagsusuri.'],
+'分析血液形成血塊的情形，協助團隊在需要時評估凝血與止血處置。',
+'Analyzes how your blood forms clots, helping the team assess clotting and bleeding-control care when needed.',
+'Menganalisis cara darah membentuk bekuan, membantu tim menilai penanganan pembekuan dan penghentian perdarahan bila diperlukan.',
+'วิเคราะห์การเกิดลิ่มเลือด ช่วยให้ทีมประเมินการดูแลเรื่องการแข็งตัวของเลือดและการห้ามเลือดเมื่อจำเป็น',
+'Phân tích quá trình máu hình thành cục đông, giúp nhóm đánh giá việc xử trí đông máu và cầm máu khi cần.',
+'Sinusuri kung paano namumuo ang iyong dugo, para matulungan ang team na suriin ang pangangalaga sa pamumuo at pagpigil ng pagdurugo kung kailangan.'],
 pain:[
 '持續評估疼痛反應並調整止痛照護，幫助團隊更有依據地處理麻醉前後的不舒服；不表示完全無痛。',
 'Ongoing pain assessment helps the team adjust pain care and respond to discomfort around surgery. It does not mean all pain will be eliminated.',
@@ -65,12 +65,12 @@ sedation:[
 'Thuốc an thần giúp thư giãn và giảm tỉnh táo khi làm thủ thuật; gói EEG thêm theo dõi độ sâu. An thần khác giảm đau và cần theo dõi hô hấp.',
 'Nakakatulong ang gamot sa sedation na magrelaks at mabawasan ang kamalayan; may depth monitoring ang EEG bundle. Iba ang sedation sa pain relief at kailangang bantayan ang paghinga.'],
 muscle:[
-'協助團隊安排手術需要的肌肉放鬆與恢復，讓手術操作較順利；此品項已包含 Sugammadex，須確認是否與其他項目重複。',
-'Helps the team manage muscle relaxation for surgery and recovery afterwards. This service includes Sugammadex; check for overlapping selections.',
-'Membantu tim mengelola relaksasi otot saat operasi dan pemulihannya. Layanan ini termasuk Sugammadex; pastikan tidak memilih biaya yang tumpang tindih.',
-'ช่วยทีมดูแลการคลายกล้ามเนื้อสำหรับการผ่าตัดและการฟื้นตัว รายการนี้รวม Sugammadex โปรดตรวจรายการซ้ำซ้อน',
-'Giúp nhóm quản lý giãn cơ khi mổ và hồi phục sau đó. Dịch vụ này đã gồm Sugammadex; cần kiểm tra mục trùng.',
-'Tumutulong sa team na pangasiwaan ang pagrelaks at pagbawi ng lakas ng kalamnan. Kasama na ang Sugammadex; kumpirmahin kung may dobleng pagpili.'],
+'協助團隊安排手術需要的肌肉放鬆與恢復，讓手術操作較順利；此品項已包含肌肉鬆弛劑專一解藥 Sugammadex。',
+'Helps the team arrange the muscle relaxation needed for surgery and the recovery of muscle strength afterwards, so the operation goes more smoothly. This item already includes Sugammadex, the specific reversal drug for the muscle relaxant.',
+'Membantu tim mengatur relaksasi otot yang diperlukan saat operasi dan pemulihannya agar operasi lebih lancar. Item ini sudah termasuk Sugammadex, obat penawar khusus pelemas otot.',
+'ช่วยทีมจัดการการคลายกล้ามเนื้อที่จำเป็นต่อการผ่าตัดและการฟื้นตัวของกล้ามเนื้อ ให้การผ่าตัดราบรื่นขึ้น รายการนี้รวมยา Sugammadex ซึ่งเป็นยาต้านฤทธิ์ยาคลายกล้ามเนื้อโดยเฉพาะแล้ว',
+'Giúp nhóm sắp xếp giãn cơ cần cho ca mổ và phục hồi sức cơ sau đó, giúp ca mổ thuận lợi hơn. Mục này đã gồm Sugammadex, thuốc giải đặc hiệu của thuốc giãn cơ.',
+'Tumutulong sa team na ayusin ang pagrelaks ng kalamnan na kailangan sa operasyon at ang pagbawi nito, para mas maayos ang operasyon. Kasama na rito ang Sugammadex, ang tiyak na pangontra sa muscle relaxant.'],
 reverse:[
 '協助逆轉特定肌肉鬆弛藥的作用，幫助恢復肌力；並非所有麻醉藥的解藥，仍需確認呼吸與肌力恢復。',
 'Reverses the effects of certain muscle relaxants to help strength return. It is not an antidote to every anesthetic; breathing and strength must still be checked.',
