@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024" width="1024" height="1024">
-  <!-- 安心麻醉島 App 圖示：麻醉醫師與小病人握手，底圖為淡化的慈濟蓮花標誌，底部文字「花慈安心守護」 -->
+  <!-- 安心麻醉島 App 圖示：麻醉醫師與小病人握手，底圖為淡化的慈濟蓮花標誌，底部文字「花慈麻醉安心手術」 -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#eaf4fd"/>
@@ -12,7 +12,8 @@
   </defs>
   <rect width="1024" height="1024" fill="url(#bg)"/>
   <!-- 淡化的慈濟蓮花底圖 -->
-  <image href="tzuchi-logo-clear.png" xlink:href="tzuchi-logo-clear.png" x="132" y="96" width="760" height="578" opacity=".2" preserveAspectRatio="xMidYMid meet"/>
+  <image href="tzuchi-logo-clear.png" xlink:href="tzuchi-logo-clear.png" x="2" y="20" width="1020" height="760" opacity=".2" preserveAspectRatio="xMidYMid meet"/>
+  <g transform="translate(515 772) scale(1.24) translate(-515 -772)">
   <!-- 地面陰影 -->
   <ellipse cx="512" cy="760" rx="330" ry="34" fill="#7a6a9a" opacity=".14"/>
 
@@ -68,7 +69,8 @@
   <!-- 小愛心 -->
   <path d="M520 470c-26-22-18-46 0-34 18-12 26 12 0 34Z" fill="#f08aa8" stroke="#d2557f" stroke-width="4"/>
 
+  </g>
   <!-- 底部文字 -->
-  <rect x="222" y="806" width="580" height="116" rx="58" fill="#ffffff" stroke="#e6a9bf" stroke-width="6"/>
-  <text x="512" y="886" text-anchor="middle" font-family="WenQuanYi Zen Hei, PingFang TC, Noto Sans TC, sans-serif" font-size="70" font-weight="700" fill="#5a3f6e" letter-spacing="6">花慈安心守護</text>
+  <rect x="92" y="808" width="840" height="150" rx="75" fill="#ffffff" stroke="#e6a9bf" stroke-width="6"/>
+  <text x="512" y="912" text-anchor="middle" font-family="WenQuanYi Zen Hei, PingFang TC, Noto Sans TC, sans-serif" font-size="94" font-weight="700" fill="#5a3f6e" letter-spacing="2">花慈麻醉安心手術</text>
 </svg>
