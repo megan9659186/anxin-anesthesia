@@ -53,5 +53,20 @@ header{justify-content:flex-end}
 .answers button{font-size:calc(15px * var(--text-scale,1.15));padding:12px 20px}
 .learn a,.learn-next{font-size:calc(15px * var(--text-scale,1.15))}
 
-/* 電腦：地圖不超過一個畫面高 */
-@media(min-width:1025px){.map-scroll #island{max-height:calc(100vh - 150px);display:block;margin:auto}}
+/* 小病人資料區放大 */
+.journey .journey-person{gap:18px;align-items:center}
+.journey .journey-person .patient-portrait{width:96px;height:134px}
+.journey .journey-person #patient-info{font-size:calc(15px * var(--text-scale,1.15))}
+.journey .journey-person #patient-info strong{font-size:calc(19px * var(--text-scale,1.15))}
+.journey .journey-person #patient-info small{font-size:calc(14px * var(--text-scale,1.15))}
+.journey .journey-person #patient-info button{font-size:calc(14px * var(--text-scale,1.15))}
+
+/* 「這次手術麻醉我的擔心」只顯示一次（標題保留給螢幕閱讀器） */
+.care-conditions>legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* 自費項目：可能的好處 */
+.catalog-benefit-intro{background:#fff4f8;border:2px dashed #f2b8cc;border-radius:16px;padding:12px 16px;font-size:calc(14px * var(--text-scale,1.15));line-height:1.8;color:var(--ink)}
+.catalog-benefit{display:block;margin-top:8px;padding:8px 10px;border-radius:10px;background:#f1f8f3;color:#3f6b55;font-size:calc(13px * var(--text-scale,1.15));line-height:1.7}
+.catalog-benefit b{font-weight:700}
+.catalog-benefit-match{display:block;font-style:normal;color:#c2457a;font-weight:700;margin-top:4px}
+.catalog-card.matches-concern{border-color:#f08aa8;box-shadow:0 0 0 2px #fbd3e0}
