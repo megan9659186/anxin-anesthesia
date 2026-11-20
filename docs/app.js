@@ -89,7 +89,9 @@ function renderPatient(){
  try{const w=Math.min(80,Math.max(44,$('#patient-label').getComputedTextLength()+20));const tag=$('#patient-tag rect');tag.setAttribute('x',-w/2);tag.setAttribute('width',w)}catch{}
  if(!moving){placeStops();positionPatient(parking[currentStation])}
 }
-function positionPatient(point){patientPoint=[...point];$('#patient-marker').setAttribute('transform',`translate(${point[0]} ${point[1]})`);}
+function positionPatient(point){patientPoint=[...point];$('#patient-marker').setAttribute('transform',`translate(${point[0]} ${point[1]})`);if(moving)followPatient();}
+// 小病人走路時，畫面跟著捲動，讓小病人保持在畫面中間一帶
+function followPatient(){const r=$('#patient-marker').getBoundingClientRect();if(!r.height)return;const mid=(r.top+r.bottom)/2,h=innerHeight,top=h*.3,bottom=h*.7;if(mid>bottom)scrollBy(0,mid-bottom);else if(mid<top)scrollBy(0,mid-top);}
 function setWalking(on,target){moving=on;$('#patient-marker').classList.toggle('walking',on);$('#next-station').disabled=on;document.querySelectorAll('.house').forEach(el=>el.setAttribute('aria-disabled',on));if(on){$('#location').textContent=t('walking',{station:topicName(target)});$('#next-station').textContent=t('walking',{station:topicName(target)})}else renderPatient();}
 // 沿白線走：門口 → 道路 → 依環島道路較近的方向一段一段走 → 目的地門口。
 // 從目前停留點沿著環島道路走到目的地停留點，選比較近的方向，一路往前不折返。
@@ -151,7 +153,7 @@ function openPatientForm(){
  $('#form-language').onclick=()=>{draft=collectDraft();reopenProfile=true;$('#patient-dialog').close();showLanguages()};
  const form=$('#patient-form');form.elements.name.oninput=()=>form.elements.name.setCustomValidity('');
  form.querySelectorAll('[name=disease]').forEach(box=>box.onchange=()=>{form.querySelector('[name=disease]').setCustomValidity('');if(!box.checked)return;form.querySelectorAll('[name=disease]').forEach(other=>{if(other!==box&&(Number(box.value)>=8||Number(other.value)>=8))other.checked=false})});
- form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}if(!patient||patient.surgery!==value.surgery){careState.method=isExamination(value.surgery)?2:0;careState.examStage='upper';}applySurgeryPreset(value.surgery);patient=value;configureJourney();updateLanguage(language);$('#patient-dialog').close();renderPatient();positionPatient(parking[currentStation]);pendingStation=null;$('#location').textContent=careText().visit;requestAnimationFrame(()=>$('.journey').scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'center'}))};
+ form.onsubmit=e=>{e.preventDefault();const value=collectDraft();value.name=value.name.trim();if(!value.name){form.elements.name.setCustomValidity(t('nameError'));form.elements.name.reportValidity();return}if(!value.diseases.length){const first=form.querySelector('[name=disease]');first.setCustomValidity(t('diseaseError'));first.reportValidity();return}if(!patient||patient.surgery!==value.surgery){careState.method=isExamination(value.surgery)?2:0;careState.examStage='upper';}applySurgeryPreset(value.surgery);patient=value;configureJourney();updateLanguage(language);$('#patient-dialog').close();renderPatient();positionPatient(parking[currentStation]);pendingStation=null;$('#location').textContent=careText().visit;requestAnimationFrame(()=>$('.intro').scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'start'}))};
  if(!$('#patient-dialog').open)$('#patient-dialog').showModal();$('#patient-dialog').scrollTop=0;
 }
 function showLanguages(){if(moving)return;$('#language-dialog').showModal();$('#language-dialog').scrollTop=0;}

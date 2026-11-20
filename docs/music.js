@@ -52,6 +52,9 @@
  if(!buttons.length)document.body.append(makeButton());
  label();
  new MutationObserver(label).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ // 選擇語言時，背景音樂預設開啟（之後使用者可以自己關掉）
+ let languagePicked=false;
+ document.addEventListener('click',e=>{if(languagePicked||!e.target.closest('#language-dialog [data-lang]'))return;languagePicked=true;wanted=true;try{localStorage.setItem('anxin-music','on')}catch{}label();start()},true);
  // 第一次點擊畫面（例如選語言）時開始播放
  const first=()=>{document.removeEventListener('pointerdown',first,true);document.removeEventListener('keydown',first,true);if(wanted)start()};
  document.addEventListener('pointerdown',first,true);document.addEventListener('keydown',first,true);
