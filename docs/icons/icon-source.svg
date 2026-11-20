@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024" width="1024" height="1024">
-  <!-- 安心麻醉島 App 圖示：麻醉醫師與小病人握手，底圖為淡化的慈濟蓮花標誌，底部文字「花慈麻醉安心手術」 -->
+  <!-- 安心麻醉島 App 圖示：麻醉醫師與小病人握手，底圖為淡化的慈濟蓮花標誌，底部文字「花慈安心麻醉」 -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#eaf4fd"/>
@@ -75,5 +75,5 @@
   </g>
   <!-- 底部文字 -->
   <rect x="92" y="808" width="840" height="150" rx="75" fill="#ffffff" stroke="#e6a9bf" stroke-width="6"/>
-  <text x="512" y="912" text-anchor="middle" font-family="WenQuanYi Zen Hei, PingFang TC, Noto Sans TC, sans-serif" font-size="94" font-weight="700" fill="#5a3f6e" letter-spacing="2">花慈麻醉安心手術</text>
+  <text x="517" y="916" text-anchor="middle" font-family="WenQuanYi Zen Hei, PingFang TC, Noto Sans TC, sans-serif" font-size="104" font-weight="700" fill="#5a3f6e" letter-spacing="10">花慈安心麻醉</text>
 </svg>
