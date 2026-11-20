@@ -4,7 +4,6 @@
 (()=>{
  const vv=window.visualViewport;if(!vv)return;
  function fit(){document.querySelectorAll('dialog[open]').forEach(d=>{
-  if(d.id==='rotate-dialog')return;
   if(vv.scale>1.02){const s=vv.scale;d.classList.add('fit-visual');Object.assign(d.style,{left:vv.offsetLeft+'px',top:vv.offsetTop+'px',width:vv.width*s+'px',height:vv.height*s+'px',transform:`scale(${1/s})`})}
   else if(d.classList.contains('fit-visual')){d.classList.remove('fit-visual');['left','top','width','height','transform'].forEach(k=>d.style[k]='')}
  })}

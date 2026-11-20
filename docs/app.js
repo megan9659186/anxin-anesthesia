@@ -163,7 +163,7 @@ function showIndex(){if(moving)return;$('#topic-dialog').classList.remove('wide-
 function showAbout(){$('#topic-dialog').classList.remove('wide-dialog');const root=$('#topic-content');root.innerHTML=`<h2 id="topic-title">${esc(t('aboutTitle'))}</h2><p>${esc(t('aboutBody'))}</p><p>${esc(t('aboutNote'))}</p><p class="hint">${esc(t('sources'))}:<br><a href="https://madeforthismoment.asahq.org/anesthesia-101/" target="_blank" rel="noopener">${esc(t('sourceASA'))}</a><br><a href="https://anesth.or.jp/users/english/for_patients/patient_guide" target="_blank" rel="noopener">${esc(t('sourceJapan'))}</a></p>`;$('#topic-dialog').showModal();}
 function renderQuiz(){const result=$('#quiz-feedback');result.textContent=quizAnswer===null?t('quizHint'):(t(quizAnswer?'quizRight':'quizTry')+' '+t('quizExplanation'));}
 $('#language-button').onclick=()=>{reopenProfile=false;showLanguages()};
-document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const needsProfile=!patient||reopenProfile;languageChosen=true;updateLanguage(b.dataset.lang);$('#language-dialog').close();reopenProfile=false;if(needsProfile)afterOrientationPrompt(openPatientForm)});
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const needsProfile=!patient||reopenProfile;languageChosen=true;updateLanguage(b.dataset.lang);$('#language-dialog').close();reopenProfile=false;if(needsProfile)openPatientForm()});
 $('#language-dialog').addEventListener('cancel',e=>{if(!languageChosen||reopenProfile)e.preventDefault()});
 $('#close-patient').onclick=()=>{$('#patient-dialog').close();draft=null;pendingStation=null};
 $('#close-topic').onclick=()=>$('#topic-dialog').close();$('#topic-dialog').onclick=e=>{if(e.target===$('#topic-dialog'))$('#topic-dialog').close()};
