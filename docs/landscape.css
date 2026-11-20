@@ -85,3 +85,9 @@ header{justify-content:flex-end}
 @keyframes cue-bounce{50%{transform:translateY(8px)}}
 @media(prefers-reduced-motion:reduce){.scroll-to-map-arrow{animation:none}}
 @media(max-width:900px) and (orientation:portrait){.scroll-to-map{min-height:0}}
+
+/* 下一站：招牌外框閃亮，提示現在要點這一站 */
+.house-label .sign-glow{opacity:0;stroke-width:0;pointer-events:none}
+.house-label.station-next .sign-glow{animation:sign-glow 1.3s ease-in-out infinite}
+@keyframes sign-glow{0%,100%{opacity:.25;stroke-width:3px}50%{opacity:.95;stroke-width:9px}}
+@media(prefers-reduced-motion:reduce){.house-label.station-next .sign-glow{animation:none;opacity:.8;stroke-width:6px}}
