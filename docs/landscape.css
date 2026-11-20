@@ -12,3 +12,46 @@ header{justify-content:flex-end}
   header,.intro,.learn,footer{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
   .island-layout{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
 }
+
+/* 背景音樂開關：在字體大小旁邊（頁面右上角與每一站視窗） */
+.music-toggle{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 14px;border:2px solid #a9dfca;border-radius:999px;background:var(--mint,#dff5ec);color:var(--ink);font-weight:700;font-size:calc(13px * var(--text-scale,1.15));cursor:pointer;margin-left:6px}
+.music-toggle.is-off{background:#fff;border-color:#d9d0e6;color:var(--ink-soft)}
+.music-toggle .music-state{font-size:calc(11px * var(--text-scale,1.15));padding:2px 8px;border-radius:999px;background:#fff;color:#3f7d66}
+.music-toggle.is-off .music-state{background:#f2eef6;color:var(--ink-soft)}
+@media(max-width:600px){.music-toggle .music-name{display:none}.music-toggle{padding:6px 10px;margin-left:2px}}
+
+/* 安心手術室的「回到地圖」與其他站一樣寬 */
+.wide-dialog #scene-back,.operating-room-v2 #scene-back{max-width:none;width:100%}
+
+/* 我的麻醉照護旅程：橫向，放在地圖上方 */
+.island-layout{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+.island-layout>.map-panel{width:100%;min-width:0}
+.journey{width:auto;margin:12px 0 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr);gap:14px 26px;align-items:center;padding:18px 24px}
+.journey .journey-who,.journey .journey-go,.journey .island-passport{grid-column:auto;grid-row:auto;min-width:0;margin:0}
+.journey .journey-who .eyebrow{display:block}
+.journey .journey-who h2{display:block;margin:6px 0 10px;font-size:calc(17px * var(--text-scale,1.15));line-height:1.5}
+.journey .journey-person{display:flex;gap:12px;align-items:flex-start}
+.journey .journey-person .patient-portrait{float:none;flex:none;width:52px;height:72px;margin:0}
+.journey .journey-person #patient-info{min-height:0}
+.journey .journey-go .progress{margin:0 0 4px}
+.journey .journey-go .small,.journey .journey-go .location{margin:4px 0;min-height:0}
+.journey .journey-go .primary{max-width:none;width:100%;margin-top:6px}
+.journey .journey-go .journey-note,.journey .journey-go .motion-setting{margin-top:8px}
+.journey .island-passport .passport-stamps{margin:10px 0 6px;grid-template-columns:repeat(6,minmax(0,52px));justify-content:space-between}
+@media(max-width:900px) and (orientation:portrait){
+  .journey{grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:16px}
+  .journey .island-passport{grid-column:1/-1;grid-row:2}
+}
+@media(max-width:640px) and (orientation:portrait){
+  .journey{grid-template-columns:1fr;gap:12px;padding:14px}
+  .journey .island-passport{grid-row:auto}
+}
+
+/* 下方「有疑問，就說出來」與小知識：小字放大，大標題不變 */
+.learn .eyebrow{font-size:calc(13px * var(--text-scale,1.15))}
+.learn p,.quiz p{font-size:calc(16px * var(--text-scale,1.15))}
+.answers button{font-size:calc(15px * var(--text-scale,1.15));padding:12px 20px}
+.learn a,.learn-next{font-size:calc(15px * var(--text-scale,1.15))}
+
+/* 電腦：地圖不超過一個畫面高 */
+@media(min-width:1025px){.map-scroll #island{max-height:calc(100vh - 150px);display:block;margin:auto}}

@@ -44,10 +44,13 @@
   master.gain.cancelScheduledValues(ac.currentTime);master.gain.setValueAtTime(master.gain.value,ac.currentTime);master.gain.linearRampToValueAtTime(0,ac.currentTime+.4);
   setTimeout(()=>{if(!playing)ac.suspend()},500);
  }
- const button=document.createElement('button');button.id='music-button';button.type='button';
- function label(){const l=LABELS[document.documentElement.lang]||LABELS['zh-Hant'];button.innerHTML=`<span aria-hidden="true">${wanted?'🎵':'🔇'}</span><span>${l[0]}</span><span class="music-state" aria-hidden="true">${wanted?l[3]:l[4]}</span>`;button.setAttribute('aria-pressed',String(wanted));button.setAttribute('aria-label',l[wanted?2:1]);button.title=l[wanted?2:1];button.classList.toggle('is-off',!wanted);}
- button.onclick=e=>{e.stopPropagation();wanted=!wanted;try{localStorage.setItem('anxin-music',wanted?'on':'off')}catch{}label();wanted?start():stop()};
- document.body.append(button);label();
+ // 開關按鈕：放在頁面右上角字體大小旁，以及每一站視窗的字體大小旁，全部同步
+ const buttons=[];
+ function makeButton(){const button=document.createElement('button');button.type='button';button.className='music-toggle';button.onclick=e=>{e.stopPropagation();wanted=!wanted;try{localStorage.setItem('anxin-music',wanted?'on':'off')}catch{}label();wanted?start():stop()};buttons.push(button);return button;}
+ function label(){const l=LABELS[document.documentElement.lang]||LABELS['zh-Hant'];buttons.forEach(button=>{button.innerHTML=`<span aria-hidden="true">${wanted?'🎵':'🔇'}</span><span class="music-name">${l[0]}</span><span class="music-state" aria-hidden="true">${wanted?l[3]:l[4]}</span>`;button.setAttribute('aria-pressed',String(wanted));button.setAttribute('aria-label',l[wanted?2:1]);button.title=l[wanted?2:1];button.classList.toggle('is-off',!wanted)});}
+ document.querySelectorAll('.font-controls').forEach(controls=>controls.append(makeButton()));
+ if(!buttons.length)document.body.append(makeButton());
+ label();
  new MutationObserver(label).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  // 第一次點擊畫面（例如選語言）時開始播放
  const first=()=>{document.removeEventListener('pointerdown',first,true);document.removeEventListener('keydown',first,true);if(wanted)start()};
