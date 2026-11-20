@@ -1,0 +1,14 @@
+/* 頁首不放島名；字體大小移到藍色介紹區 */
+header{justify-content:flex-end}
+.intro>.font-controls{grid-column:1/-1;display:flex;justify-content:flex-end;margin:0 0 4px}
+
+/* 手機橫式：視窗（各站說明、語言、基本資料）填滿整個畫面 */
+@media (orientation:landscape) and (max-height:600px){
+  dialog,.wide-dialog{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;border:0}
+  .modalbody,.wide-dialog>.modalbody{padding:16px max(20px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
+  dialog .font-controls{margin:0 52px 12px 0}
+  #rotate-dialog{height:auto;width:min(520px,100vw);margin:auto;border-radius:24px}
+  /* 有瀏海的手機：畫面延伸到左右兩側，不留灰邊 */
+  header,.intro,.learn,footer{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+  .island-layout{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+}
