@@ -3,7 +3,7 @@ const $ = selector => document.querySelector(selector);
 const svgNS = 'http://www.w3.org/2000/svg';
 let language = 'zh-Hant', languageChosen = false, patient = null, draft = null;
 let currentStation = 0, currentTopic = null, moving = false, pendingStation = null, reopenProfile = false;
-let phase = 'all', seen = new Set(), quizAnswer = null;
+let phase = 'all', seen = new Set(), doneStations = new Set(), quizAnswer = null;
 let patientPoint = [350,300], animateWalking = true;
 // patientMode：gown 病人服走路、bed 躺病床被推、clothes 換回自己的衣服；insideHouse：小病人目前在哪間房子裡（null＝在外面）。
 let patientMode='gown', insideHouse=null, leavePromise=null;
@@ -49,7 +49,7 @@ function renderMap(){
   const name=topicName(i);let lines=[name];if(name.includes('（')||name.includes(' (')){const split=name.includes('（')?name.indexOf('（'):name.indexOf(' (');lines=[name.slice(0,split),name.slice(split).trim()]}else if(name.length>19&&name.includes(' ')){let parts=name.split(' '),line='';lines=[];parts.forEach(word=>{if((line+' '+word).trim().length>19&&line){lines.push(line);line=word}else line=(line+' '+word).trim()});if(line)lines.push(line)}
   const lineGap=14*(Number(document.documentElement.style.getPropertyValue('--text-scale'))||1.15),subGap=lineGap*.72;
   // 房子名稱做成屋頂上的小招牌，不放在道路上，小人走路時不會和字重疊。
-  const label=document.createElementNS(svgNS,'g');label.setAttribute('class','house-label'+(patient&&i===[...Array(totalStops).keys()].find(j=>!seen.has(j))?' station-next':''));label.setAttribute('data-station',i);label.setAttribute('transform',`translate(${x} ${y})`);label.setAttribute('aria-hidden','true');
+  const label=document.createElementNS(svgNS,'g');label.setAttribute('class','house-label'+(i===nextGlowStation()?' station-next':''));label.setAttribute('data-station',i);label.setAttribute('transform',`translate(${x} ${y})`);label.setAttribute('aria-hidden','true');
   const bottom=-58,top=bottom-lines.length*lineGap-subGap;
   lines.forEach((line,j)=>label.append(svgText(line,0,top+lineGap*(j+.82),'station-label')));
   label.append(svgText(ui().phases[phaseFor(i)],0,bottom-subGap*.25,'station-sublabel'));
@@ -93,7 +93,7 @@ function positionPatient(point){patientPoint=[...point];$('#patient-marker').set
 function revealPatient(){const r=$('#patient-marker').getBoundingClientRect();if(!r.height)return;const mid=(r.top+r.bottom)/2,h=innerHeight;if(mid<h*.3||mid>h*.7)scrollBy({top:mid-h*.5,behavior:reducedMotion()?'auto':'smooth'});}
 // 小病人走路時，畫面跟著捲動，讓小病人保持在畫面中間一帶
 function followPatient(){const r=$('#patient-marker').getBoundingClientRect();if(!r.height)return;const mid=(r.top+r.bottom)/2,h=innerHeight,top=h*.3,bottom=h*.7;if(mid>bottom)scrollBy(0,mid-bottom);else if(mid<top)scrollBy(0,mid-top);}
-function setWalking(on,target){moving=on;$('#patient-marker').classList.toggle('walking',on);$('#next-station').disabled=on;document.querySelectorAll('.house').forEach(el=>el.setAttribute('aria-disabled',on));if(on){$('#location').textContent=t('walking',{station:topicName(target)});$('#next-station').textContent=t('walking',{station:topicName(target)})}else renderPatient();}
+function setWalking(on,target){moving=on;glowNext();$('#patient-marker').classList.toggle('walking',on);$('#next-station').disabled=on;document.querySelectorAll('.house').forEach(el=>el.setAttribute('aria-disabled',on));if(on){$('#location').textContent=t('walking',{station:topicName(target)});$('#next-station').textContent=t('walking',{station:topicName(target)})}else renderPatient();}
 // 沿白線走：門口 → 道路 → 依環島道路較近的方向一段一段走 → 目的地門口。
 // 從目前停留點沿著環島道路走到目的地停留點，選比較近的方向，一路往前不折返。
 function roadPath(from,to){const ps=stopPos[from],pt=stopPos[to],forward=((pt-ps)%loopTotal+loopTotal)%loopTotal,backward=loopTotal-forward,dir=forward<=backward?1:-1,len=dir>0?forward:backward;
@@ -119,12 +119,12 @@ const pause=ms=>new Promise(r=>setTimeout(r,reducedMotion()?0:ms));
 function setDoor(i,open){houseEl(i)?.classList.toggle('door-open',open);}
 // 走到門口（同時變小、淡出）＝走進房子
 function fadeMove(target,fromK,toK,fromA,toA,ms){const start=[...patientPoint],marker=$('#patient-marker'),sprite=$('#patient-sprite'),base=spriteScale();const duration=reducedMotion()?0:ms;return new Promise(resolve=>{let begin;function frame(now){if(begin===undefined)begin=now;const p=duration?Math.min(1,(now-begin)/duration):1;positionPatient([start[0]+(target[0]-start[0])*p,start[1]+(target[1]-start[1])*p]);const k=fromK+(toK-fromK)*p;sprite.setAttribute('transform',`scale(${base*k})`);marker.style.opacity=String(fromA+(toA-fromA)*p);if(p<1)requestAnimationFrame(frame);else resolve()}requestAnimationFrame(frame)});}
-async function enterHouse(i){moving=true;$('#next-station').disabled=true;setDoor(i,true);await pause(350);$('#patient-marker').classList.add('walking');await fadeMove(doorPoint(i),1,.55,1,0,patientMode==='bed'?900:700);$('#patient-marker').classList.remove('walking');insideHouse=i;$('#patient-marker').setAttribute('visibility','hidden');setDoor(i,false);moving=false;$('#next-station').disabled=false;}
+async function enterHouse(i){moving=true;glowNext();$('#next-station').disabled=true;setDoor(i,true);await pause(350);$('#patient-marker').classList.add('walking');await fadeMove(doorPoint(i),1,.55,1,0,patientMode==='bed'?900:700);$('#patient-marker').classList.remove('walking');insideHouse=i;$('#patient-marker').setAttribute('visibility','hidden');setDoor(i,false);moving=false;$('#next-station').disabled=false;}
 // 關掉站點視窗後：畫面回到地圖，小病人開門走出來、門再關上
 function leaveHouse(){if(insideHouse===null)return Promise.resolve();if(leavePromise)return leavePromise;leavePromise=(async()=>{const i=insideHouse;moving=true;$('#next-station').disabled=true;revealPatient();await pause(450);
  const mode=exitMode(i),changed=mode==='clothes'&&patientMode!=='clothes';setMode(mode);positionPatient(doorPoint(i));const marker=$('#patient-marker');marker.style.opacity='0';$('#patient-sprite').setAttribute('transform',`scale(${spriteScale()*.55})`);marker.setAttribute('visibility','visible');
  setDoor(i,true);await pause(350);marker.classList.add('walking');await fadeMove(parking[i],.55,1,0,1,patientMode==='bed'?900:700);marker.classList.remove('walking');await pause(150);setDoor(i,false);
- insideHouse=null;moving=false;$('#next-station').disabled=false;renderPatient();if(changed)$('#location').textContent=CLOTHES_TEXT[language].replace('{name}',patient.name);})().finally(()=>{leavePromise=null});return leavePromise;}
+ insideHouse=null;moving=false;doneStations.add(i);$('#next-station').disabled=false;renderPatient();glowNext();if(changed)$('#location').textContent=CLOTHES_TEXT[language].replace('{name}',patient.name);})().finally(()=>{leavePromise=null});return leavePromise;}
 $('#topic-dialog').addEventListener('close',()=>{if(insideHouse!==null)leaveHouse();});
 async function visit(i){
  if(!patient){pendingStation=i;openPatientForm();return}
@@ -172,7 +172,10 @@ $('#walk-animation').onchange=e=>{animateWalking=e.target.checked};
 $('#quiz-yes').onclick=()=>{quizAnswer=false;renderQuiz()};$('#quiz-no').onclick=()=>{quizAnswer=true;renderQuiz()};
 updateLanguage('zh-Hant');showLanguages();
 
-function updatePreopGuide(){const next=patient?[...Array(totalStops).keys()].find(i=>!seen.has(i)):undefined;document.querySelectorAll('#house-labels .house-label').forEach(l=>l.classList.toggle('station-next',Number(l.dataset.station)===next));const guide=$('#preop-guide');const visible=false;guide.setAttribute('visibility',visible?'visible':'hidden');guide.setAttribute('aria-hidden',String(!visible));guide.setAttribute('tabindex',visible?'0':'-1');guide.setAttribute('aria-label',t('preopGuide'));$('#preop-guide-label').textContent=t('preopGuide');}
+// 下一站招牌閃亮：只在小病人走出上一站之後才換到下一站；走路中或在房子裡時不閃
+function nextGlowStation(){if(!patient||moving||insideHouse!==null)return undefined;return [...Array(totalStops).keys()].find(i=>!doneStations.has(i));}
+function glowNext(){const next=nextGlowStation();document.querySelectorAll('#house-labels .house-label').forEach(l=>l.classList.toggle('station-next',Number(l.dataset.station)===next));}
+function updatePreopGuide(){glowNext();const guide=$('#preop-guide');const visible=false;guide.setAttribute('visibility',visible?'visible':'hidden');guide.setAttribute('aria-hidden',String(!visible));guide.setAttribute('tabindex',visible?'0':'-1');guide.setAttribute('aria-label',t('preopGuide'));$('#preop-guide-label').textContent=t('preopGuide');}
 $('#preop-guide').addEventListener('click',()=>visit(0));
 $('#preop-guide').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();visit(0)}});
 
