@@ -3,7 +3,7 @@ const $ = selector => document.querySelector(selector);
 const svgNS = 'http://www.w3.org/2000/svg';
 let language = 'zh-Hant', languageChosen = false, patient = null, draft = null;
 let currentStation = 0, currentTopic = null, moving = false, pendingStation = null, reopenProfile = false;
-let phase = 'all', seen = new Set(), doneStations = new Set(), quizAnswer = null;
+let phase = 'all', seen = new Set(), doneStations = new Set(), walkTarget = null, leavingHouse = false, quizAnswer = null;
 let patientPoint = [350,300], animateWalking = true;
 // patientMode：gown 病人服走路、bed 躺病床被推、clothes 換回自己的衣服；insideHouse：小病人目前在哪間房子裡（null＝在外面）。
 let patientMode='gown', insideHouse=null, leavePromise=null;
@@ -69,7 +69,8 @@ function measureLoop(){loopCum=[0];for(let k=0;k<route.length;k++){const a=route
 function pointAt(s){s=((s%loopTotal)+loopTotal)%loopTotal;let k=0;while(k<route.length-1&&loopCum[k+1]<=s)k++;const a=route[k],b=route[(k+1)%route.length],f=(s-loopCum[k])/(loopCum[k+1]-loopCum[k]);return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];}
 function svgBox(el){try{const b=el.getBBox(),m=el.transform.baseVal.consolidate()?.matrix;const dx=m?m.e:0,dy=m?m.f:0;return b.width?[b.x+dx-2,b.y+dy-2,b.x+dx+b.width+2,b.y+dy+b.height+2]:null}catch{return null}}
 function placeStops(){measureLoop();const blocks=[...document.querySelectorAll('#houses .house,#house-labels .house-label')].map(svgBox).filter(Boolean);let half=40;try{half=Number($('#patient-tag rect').getAttribute('width'))/2||40}catch{}const hits=([x,y])=>blocks.some(([l,t,r,b])=>x+half>l&&x-half<r&&y+41>t&&y-30<b);
- stopPos=houses.map((_,i)=>{const base=loopCum[i];for(let d=0;d<=260;d+=6){const options=[base+d,base-d].map(s=>({s,p:pointAt(s)})).filter(o=>!hits(o.p)).sort((a,b)=>b.p[1]-a.p[1]);if(options.length)return options[0].s}return base+90;});
+ // 停靠點：選離這間房子門口最近、又不會壓到房子或招牌的路邊位置（稍微偏好從上一站走過來的那一側），避免小病人先走過頭再折返
+ stopPos=houses.map((_,i)=>{const base=loopCum[i],door=doorPoint(i);let best=null;for(let d=0;d<=260;d+=6)for(const s of [base-d,base+d]){const p=pointAt(s);if(hits(p))continue;const score=Math.hypot(p[0]-door[0],p[1]-door[1])+(s>base?12:0);if(!best||score<best.score)best={s,score}}return best?best.s:base+90;});
  parking=stopPos.map(pointAt);}
 function applyPhase(){document.querySelectorAll('#house-labels .house-label').forEach(el=>{const match=phase==='all'||String(phaseFor(+el.dataset.station))===phase;el.style.opacity=match?'1':'.28'});document.querySelectorAll('.house').forEach(el=>{const match=phase==='all'||String(phaseFor(+el.dataset.station))===phase;el.style.opacity=match?'1':'.28'});document.querySelectorAll('[data-phase]').forEach(b=>{const active=b.dataset.phase===phase;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active)})}
 function updateLanguage(code){language=code;document.documentElement.lang=code;document.title=t('brand');document.querySelector('meta[name=description]').content=t('intro').replace('\n',' ');document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('#current-language').textContent=ui().native;queueMicrotask(updateOrientationPrompt);$('#language-title').textContent=t('chooseLanguage');$('.language-subtitle').textContent=t('chooseLanguageSub');['#close-topic','#close-patient'].forEach(s=>$(s).setAttribute('aria-label',t('close')));renderMap();renderPatient();updateProgress();renderQuiz();renderPassport();if(document.querySelector('.font-controls'))updateFontControls();if(patient)positionPatient(patientPoint);}
@@ -93,7 +94,7 @@ function positionPatient(point){patientPoint=[...point];$('#patient-marker').set
 function revealPatient(){const r=$('#patient-marker').getBoundingClientRect();if(!r.height)return;const mid=(r.top+r.bottom)/2,h=innerHeight;if(mid<h*.3||mid>h*.7)scrollBy({top:mid-h*.5,behavior:reducedMotion()?'auto':'smooth'});}
 // 小病人走路時，畫面跟著捲動，讓小病人保持在畫面中間一帶
 function followPatient(){const r=$('#patient-marker').getBoundingClientRect();if(!r.height)return;const mid=(r.top+r.bottom)/2,h=innerHeight,top=h*.3,bottom=h*.7;if(mid>bottom)scrollBy(0,mid-bottom);else if(mid<top)scrollBy(0,mid-top);}
-function setWalking(on,target){moving=on;glowNext();$('#patient-marker').classList.toggle('walking',on);$('#next-station').disabled=on;document.querySelectorAll('.house').forEach(el=>el.setAttribute('aria-disabled',on));if(on){$('#location').textContent=t('walking',{station:topicName(target)});$('#next-station').textContent=t('walking',{station:topicName(target)})}else renderPatient();}
+function setWalking(on,target){moving=on;if(on&&target!==undefined)walkTarget=target;glowNext();$('#patient-marker').classList.toggle('walking',on);$('#next-station').disabled=on;document.querySelectorAll('.house').forEach(el=>el.setAttribute('aria-disabled',on));if(on){$('#location').textContent=t('walking',{station:topicName(target)});$('#next-station').textContent=t('walking',{station:topicName(target)})}else renderPatient();}
 // 沿白線走：門口 → 道路 → 依環島道路較近的方向一段一段走 → 目的地門口。
 // 從目前停留點沿著環島道路走到目的地停留點，選比較近的方向，一路往前不折返。
 function roadPath(from,to){const ps=stopPos[from],pt=stopPos[to],forward=((pt-ps)%loopTotal+loopTotal)%loopTotal,backward=loopTotal-forward,dir=forward<=backward?1:-1,len=dir>0?forward:backward;
@@ -119,12 +120,12 @@ const pause=ms=>new Promise(r=>setTimeout(r,reducedMotion()?0:ms));
 function setDoor(i,open){houseEl(i)?.classList.toggle('door-open',open);}
 // 走到門口（同時變小、淡出）＝走進房子
 function fadeMove(target,fromK,toK,fromA,toA,ms){const start=[...patientPoint],marker=$('#patient-marker'),sprite=$('#patient-sprite'),base=spriteScale();const duration=reducedMotion()?0:ms;return new Promise(resolve=>{let begin;function frame(now){if(begin===undefined)begin=now;const p=duration?Math.min(1,(now-begin)/duration):1;positionPatient([start[0]+(target[0]-start[0])*p,start[1]+(target[1]-start[1])*p]);const k=fromK+(toK-fromK)*p;sprite.setAttribute('transform',`scale(${base*k})`);marker.style.opacity=String(fromA+(toA-fromA)*p);if(p<1)requestAnimationFrame(frame);else resolve()}requestAnimationFrame(frame)});}
-async function enterHouse(i){moving=true;glowNext();$('#next-station').disabled=true;setDoor(i,true);await pause(350);$('#patient-marker').classList.add('walking');await fadeMove(doorPoint(i),1,.55,1,0,patientMode==='bed'?900:700);$('#patient-marker').classList.remove('walking');insideHouse=i;$('#patient-marker').setAttribute('visibility','hidden');setDoor(i,false);moving=false;$('#next-station').disabled=false;}
+async function enterHouse(i){moving=true;walkTarget=i;glowNext();$('#next-station').disabled=true;setDoor(i,true);await pause(350);$('#patient-marker').classList.add('walking');await fadeMove(doorPoint(i),1,.55,1,0,patientMode==='bed'?900:700);$('#patient-marker').classList.remove('walking');insideHouse=i;walkTarget=null;glowNext();$('#patient-marker').setAttribute('visibility','hidden');setDoor(i,false);moving=false;$('#next-station').disabled=false;}
 // 關掉站點視窗後：畫面回到地圖，小病人開門走出來、門再關上
-function leaveHouse(){if(insideHouse===null)return Promise.resolve();if(leavePromise)return leavePromise;leavePromise=(async()=>{const i=insideHouse;moving=true;$('#next-station').disabled=true;revealPatient();await pause(450);
+function leaveHouse(){if(insideHouse===null)return Promise.resolve();if(leavePromise)return leavePromise;leavePromise=(async()=>{const i=insideHouse;moving=true;doneStations.add(i);leavingHouse=true;glowNext();$('#next-station').disabled=true;revealPatient();await pause(450);
  const mode=exitMode(i),changed=mode==='clothes'&&patientMode!=='clothes';setMode(mode);positionPatient(doorPoint(i));const marker=$('#patient-marker');marker.style.opacity='0';$('#patient-sprite').setAttribute('transform',`scale(${spriteScale()*.55})`);marker.setAttribute('visibility','visible');
  setDoor(i,true);await pause(350);marker.classList.add('walking');await fadeMove(parking[i],.55,1,0,1,patientMode==='bed'?900:700);marker.classList.remove('walking');await pause(150);setDoor(i,false);
- insideHouse=null;moving=false;doneStations.add(i);$('#next-station').disabled=false;renderPatient();glowNext();if(changed)$('#location').textContent=CLOTHES_TEXT[language].replace('{name}',patient.name);})().finally(()=>{leavePromise=null});return leavePromise;}
+ insideHouse=null;moving=false;leavingHouse=false;$('#next-station').disabled=false;renderPatient();glowNext();if(changed)$('#location').textContent=CLOTHES_TEXT[language].replace('{name}',patient.name);})().finally(()=>{leavePromise=null});return leavePromise;}
 $('#topic-dialog').addEventListener('close',()=>{if(insideHouse!==null)leaveHouse();});
 async function visit(i){
  if(!patient){pendingStation=i;openPatientForm();return}
@@ -172,8 +173,8 @@ $('#walk-animation').onchange=e=>{animateWalking=e.target.checked};
 $('#quiz-yes').onclick=()=>{quizAnswer=false;renderQuiz()};$('#quiz-no').onclick=()=>{quizAnswer=true;renderQuiz()};
 updateLanguage('zh-Hant');showLanguages();
 
-// 下一站招牌閃亮：只在小病人走出上一站之後才換到下一站；走路中或在房子裡時不閃
-function nextGlowStation(){if(!patient||moving||insideHouse!==null)return undefined;return [...Array(totalStops).keys()].find(i=>!doneStations.has(i));}
+// 招牌閃亮：小病人要去的那一站一路亮著（出發、走路、到門口），進到房子裡才熄；離開房子時換下一站亮
+function nextGlowStation(){if(!patient)return undefined;if(walkTarget!==null)return walkTarget;if(insideHouse!==null&&!leavingHouse)return undefined;return [...Array(totalStops).keys()].find(i=>!doneStations.has(i));}
 function glowNext(){const next=nextGlowStation();document.querySelectorAll('#house-labels .house-label').forEach(l=>l.classList.toggle('station-next',Number(l.dataset.station)===next));}
 function updatePreopGuide(){glowNext();const guide=$('#preop-guide');const visible=false;guide.setAttribute('visibility',visible?'visible':'hidden');guide.setAttribute('aria-hidden',String(!visible));guide.setAttribute('tabindex',visible?'0':'-1');guide.setAttribute('aria-label',t('preopGuide'));$('#preop-guide-label').textContent=t('preopGuide');}
 $('#preop-guide').addEventListener('click',()=>visit(0));
