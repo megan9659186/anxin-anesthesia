@@ -12,7 +12,7 @@
   </defs>
   <rect width="1024" height="1024" fill="url(#bg)"/>
   <!-- 淡化的慈濟蓮花底圖 -->
-  <image href="../tzuchi-logo.png" xlink:href="../tzuchi-logo.png" x="132" y="96" width="760" height="578" opacity=".2" preserveAspectRatio="xMidYMid meet"/>
+  <image href="tzuchi-logo-clear.png" xlink:href="tzuchi-logo-clear.png" x="132" y="96" width="760" height="578" opacity=".2" preserveAspectRatio="xMidYMid meet"/>
   <!-- 地面陰影 -->
   <ellipse cx="512" cy="760" rx="330" ry="34" fill="#7a6a9a" opacity=".14"/>
 
