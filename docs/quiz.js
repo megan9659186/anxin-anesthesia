@@ -70,6 +70,8 @@ fil:[
  ['Dapat ko bang sabihin sa anesthesia team na humihilik ako?','Oo, para makapaghanda sila','Mukhang hindi mahalaga','Ang paghilik o paghinto ng paghinga habang tulog ay tumutulong sa team na suriin ang daanan ng hangin at maghanda nang maaga.'],
  ['Nakakatulong ba ang pagtigil sa paninigarilyo bago ang operasyon?','Oo, sa paghinga at sugat','Halos walang pagkakaiba','Nagiging mas hindi sensitibo ang daanan ng hangin at mas mabilis gumaling ang sugat; mas maaga, mas mabuti.']]};
 const LEARN_UI={'zh-Hant':['選一個想法，一起認識麻醉。','💡 一起認識：','下一個小知識 →'],en:['Pick a thought and learn together.','💡 Good to know: ','Next tip →'],id:['Pilih satu pendapat dan belajar bersama.','💡 Perlu diketahui: ','Info berikutnya →'],th:['เลือกความคิดหนึ่งข้อ แล้วมาเรียนรู้ด้วยกัน','💡 มาทำความรู้จัก: ','เกร็ดความรู้ถัดไป →'],vi:['Chọn một suy nghĩ và cùng tìm hiểu.','💡 Cùng tìm hiểu: ','Mẹo tiếp theo →'],fil:['Pumili ng isang palagay at sabay tayong matuto.','💡 Alamin natin: ','Susunod na kaalaman →']};
+// 每題正確答案是第幾個選項（0＝左邊、1＝右邊），六種語言順序相同。
+const LEARN_CORRECT=[1,0,0,0,0,0,0,0,0,0];
 let learnIndex=0,learnChoice=null;
 function nextLearn(){learnIndex=(learnIndex+1)%LEARN_CARDS['zh-Hant'].length;learnChoice=null;renderQuiz();}
 // 取代 app.js 原本只有一題的 renderQuiz（updateLanguage 會呼叫它）；外觀維持原本的樣子。
@@ -77,6 +79,8 @@ renderQuiz=function(){const cards=LEARN_CARDS[language]||LEARN_CARDS['zh-Hant'],
  document.querySelector('.quiz h2').textContent=question;$('#quiz-yes').textContent=first;$('#quiz-no').textContent=second;
  $('#quiz-yes').setAttribute('aria-pressed',String(learnChoice===0));$('#quiz-no').setAttribute('aria-pressed',String(learnChoice===1));
  let next=$('#quiz-next');if(!next){next=document.createElement('button');next.id='quiz-next';next.type='button';next.className='learn-next';next.onclick=()=>{nextLearn();restartLearnTimer()};$('#quiz-feedback').after(next);}
+ // 作答後：正確答案換成綠色並讓外框閃爍；選錯的那個變淡。
+ const right=LEARN_CORRECT[learnIndex]??0;[$('#quiz-yes'),$('#quiz-no')].forEach((b,i)=>{b.classList.toggle('is-correct',learnChoice!==null&&i===right);b.classList.toggle('is-wrong',learnChoice!==null&&i===learnChoice&&i!==right)});
  next.textContent=ui[2];$('#quiz-feedback').textContent=learnChoice===null?ui[0]:ui[1]+explain;};
 $('#quiz-yes').onclick=()=>{learnChoice=0;renderQuiz()};$('#quiz-no').onclick=()=>{learnChoice=1;renderQuiz()};
 let learnTimer=null;function restartLearnTimer(){clearInterval(learnTimer);learnTimer=setInterval(nextLearn,5*60*1000);}

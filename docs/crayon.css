@@ -99,3 +99,9 @@ h1,h2,h3,h4,.brand b,.house text,.station-label,.phase-controls button,.primary,
 .farewell-say::before{content:'';position:absolute;top:-11px;left:50%;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom:11px solid #a6c4ad}
 .farewell-text{font-size:calc(13px * var(--text-scale,1.15));line-height:1.95;color:#3e5a55;margin:0 0 18px;text-align:left}
 .farewell-body .primary{max-width:280px;margin:0 auto}
+/* 一起認識麻醉：作答後正確答案換成綠色，外框閃爍 */
+.answers button.is-correct{background:#e3f4e6;border-color:#4f9a68;color:#25603b;font-weight:700;animation:answer-blink 1s ease-in-out infinite}
+.answers button.is-correct::before{content:'✓ '}
+.answers button.is-wrong{opacity:.55}
+@keyframes answer-blink{0%,100%{border-color:#4f9a68;box-shadow:0 0 0 0 #4f9a6800}50%{border-color:#9fd8b0;box-shadow:0 0 0 5px #4f9a6840}}
+@media(prefers-reduced-motion:reduce){.answers button.is-correct{animation:none;box-shadow:0 0 0 3px #4f9a6840}}
