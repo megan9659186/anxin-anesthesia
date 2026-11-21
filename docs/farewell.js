@@ -23,4 +23,4 @@ function showFarewell(){let dialog=document.getElementById('farewell-dialog');if
  const f=farewellText(),n=language==='zh-Hant'?(ZH_NUMBERS[totalStops]||totalStops):totalStops;
  dialog.innerHTML=`<div class="modalbody farewell-body"><button class="close" type="button" aria-label="${esc(f.close)}">×</button><h2 id="farewell-title">${esc(f.title)}</h2><div class="farewell-team">${f.staff.map((name,i)=>`<figure><svg viewBox="0 0 100 110" aria-hidden="true">${farewellAvatar(i===0)}</svg><figcaption>${esc(name)}</figcaption></figure>`).join('')}</div><p class="farewell-say">${esc(f.say.replace('{n}',n))}</p><p class="farewell-text">${esc(f.body)}</p><button class="primary" type="button" id="farewell-ok">${esc(f.ok)}</button></div>`;
  dialog.querySelector('.close').onclick=()=>dialog.close();dialog.querySelector('#farewell-ok').onclick=()=>dialog.close();
- dialog.showModal();dialog.querySelector('#farewell-ok').focus();}
+ dialog.showModal();dialog.scrollTop=0;dialog.querySelector('#farewell-ok').focus({preventScroll:true});requestAnimationFrame(()=>{dialog.scrollTop=0});}

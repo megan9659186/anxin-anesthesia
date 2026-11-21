@@ -105,3 +105,5 @@ h1,h2,h3,h4,.brand b,.house text,.station-label,.phase-controls button,.primary,
 .answers button.is-wrong{opacity:.55}
 @keyframes answer-blink{0%,100%{border-color:#4f9a68;box-shadow:0 0 0 0 #4f9a6800}50%{border-color:#9fd8b0;box-shadow:0 0 0 5px #4f9a6840}}
 @media(prefers-reduced-motion:reduce){.answers button.is-correct{animation:none;box-shadow:0 0 0 3px #4f9a6840}}
+.quiz{scroll-margin-top:90px}
+@media(max-height:820px){.farewell-body{padding:18px 22px 20px}.farewell-body h2{margin:2px 0 8px}.farewell-team svg{width:72px;height:80px}.farewell-say{margin:12px auto 8px;padding:10px 14px}.farewell-text{margin-bottom:12px;line-height:1.8}}

@@ -78,7 +78,7 @@ function nextLearn(){learnIndex=(learnIndex+1)%LEARN_CARDS['zh-Hant'].length;lea
 renderQuiz=function(){const cards=LEARN_CARDS[language]||LEARN_CARDS['zh-Hant'],ui=LEARN_UI[language]||LEARN_UI['zh-Hant'],[question,first,second,explain]=cards[learnIndex];
  document.querySelector('.quiz h2').textContent=question;$('#quiz-yes').textContent=first;$('#quiz-no').textContent=second;
  $('#quiz-yes').setAttribute('aria-pressed',String(learnChoice===0));$('#quiz-no').setAttribute('aria-pressed',String(learnChoice===1));
- let next=$('#quiz-next');if(!next){next=document.createElement('button');next.id='quiz-next';next.type='button';next.className='learn-next';next.onclick=()=>{nextLearn();restartLearnTimer()};$('#quiz-feedback').after(next);}
+ let next=$('#quiz-next');if(!next){next=document.createElement('button');next.id='quiz-next';next.type='button';next.className='learn-next';next.onclick=()=>{nextLearn();restartLearnTimer();const q=document.querySelector('.quiz');if(q&&q.getBoundingClientRect().top<0)q.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})};$('#quiz-feedback').after(next);}
  // 作答後：正確答案換成綠色並讓外框閃爍；選錯的那個變淡。
  const right=LEARN_CORRECT[learnIndex]??0;[$('#quiz-yes'),$('#quiz-no')].forEach((b,i)=>{b.classList.toggle('is-correct',learnChoice!==null&&i===right);b.classList.toggle('is-wrong',learnChoice!==null&&i===learnChoice&&i!==right)});
  next.textContent=ui[2];$('#quiz-feedback').textContent=learnChoice===null?ui[0]:ui[1]+explain;};
