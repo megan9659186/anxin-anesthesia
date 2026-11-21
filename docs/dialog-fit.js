@@ -9,5 +9,9 @@
  })}
  vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);
  const original=HTMLDialogElement.prototype.showModal;
- HTMLDialogElement.prototype.showModal=function(){original.call(this);fit()};
+ // iPhone 已經被放大時（例如之前輸入名字時自動放大），打開視窗先把畫面縮回原本大小：
+ // 暫時把 viewport 設成 maximum-scale=1，Safari 會自動縮回，之後再恢復成可以兩指放大。
+ const meta=document.querySelector('meta[name=viewport]'),base=meta&&meta.content;
+ function resetZoom(){if(!meta||vv.scale<=1.02)return;meta.content=base+',maximum-scale=1';setTimeout(()=>{meta.content=base;fit()},350)}
+ HTMLDialogElement.prototype.showModal=function(){original.call(this);resetZoom();fit()};
 })();

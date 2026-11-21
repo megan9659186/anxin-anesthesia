@@ -40,3 +40,12 @@ body{background:#f7f7e9}.intro .eyebrow{color:#bf7959}.intro h1{color:#285e59}.m
 @media(max-width:650px) and (orientation:portrait){.island-layout{display:flex;flex-direction:column;padding:0 10px}.journey{width:100%;margin:8px 0 0}.intro{display:block;padding:15px 18px 0}.intro .instruction{margin-bottom:12px}.catalog-grid,.selected-visual-grid{grid-template-columns:1fr}.map-heading{font-size:calc(11px * var(--text-scale))}.map-scroll #island{min-width:0;min-height:0}.formrow{grid-template-columns:1fr 1fr}.room-info-panels{grid-template-columns:1fr}}
 
 @media(max-width:1024px) and (orientation:landscape){.island-layout{grid-template-columns:1fr}.journey{display:grid;grid-template-columns:65px minmax(0,1fr) 220px;gap:8px 15px}.journey .patient-portrait{float:none;margin:0;width:55px}.journey #patient-info{grid-column:2/4}.journey>.primary{grid-column:3;max-width:220px}.journey .island-passport{grid-column:1/-1}.journey .progress,.journey .small,.journey-note{grid-column:1/-1}.journey .location{grid-column:1/3}.journey .motion-setting{grid-column:1/-1}.map-heading{font-size:calc(12px * var(--text-scale))}}
+/* iPhone 的輸入框字小於 16px 時，點下去會自動放大畫面且不會縮回，之後整個畫面可以被拖來拖去、圖也變模糊。 */
+.patient-form input[type=text],.patient-form input[type=number],.patient-form select,input.search,select,textarea{font-size:max(16px,calc(13px * var(--text-scale,1.15)))}
+/* 安心手術室上方三位人物放大一點 */
+.team-card svg{width:72px;height:80px}
+@media(max-width:800px){.team-card svg{width:60px;height:68px}}
+@media(max-width:480px){.team-card svg{width:58px;height:64px}}
+/* 長按示意圖時不要選取文字、跳出選單或拖動圖片 */
+.room-illustration,.team-ribbon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.room-illustration svg,.team-card svg{-webkit-user-drag:none}
