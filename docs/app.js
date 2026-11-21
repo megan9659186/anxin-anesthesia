@@ -125,7 +125,7 @@ async function enterHouse(i){moving=true;walkTarget=i;glowNext();$('#next-statio
 function leaveHouse(){if(insideHouse===null)return Promise.resolve();if(leavePromise)return leavePromise;leavePromise=(async()=>{const i=insideHouse;moving=true;doneStations.add(i);leavingHouse=true;glowNext();$('#next-station').disabled=true;revealPatient();await pause(450);
  const mode=exitMode(i),changed=mode==='clothes'&&patientMode!=='clothes';setMode(mode);positionPatient(doorPoint(i));const marker=$('#patient-marker');marker.style.opacity='0';$('#patient-sprite').setAttribute('transform',`scale(${spriteScale()*.55})`);marker.setAttribute('visibility','visible');
  setDoor(i,true);await pause(350);marker.classList.add('walking');await fadeMove(parking[i],.55,1,0,1,patientMode==='bed'?900:700);marker.classList.remove('walking');await pause(150);setDoor(i,false);
- insideHouse=null;moving=false;leavingHouse=false;$('#next-station').disabled=false;renderPatient();glowNext();if(changed)$('#location').textContent=CLOTHES_TEXT[language].replace('{name}',patient.name);})().finally(()=>{leavePromise=null});return leavePromise;}
+ insideHouse=null;moving=false;leavingHouse=false;$('#next-station').disabled=false;renderPatient();glowNext();if(changed)$('#location').textContent=CLOTHES_TEXT[language].replace('{name}',patient.name);if(typeof maybeFarewell==='function')maybeFarewell();})().finally(()=>{leavePromise=null});return leavePromise;}
 $('#topic-dialog').addEventListener('close',()=>{if(insideHouse!==null)leaveHouse();});
 async function visit(i){
  if(!patient){pendingStation=i;openPatientForm();return}

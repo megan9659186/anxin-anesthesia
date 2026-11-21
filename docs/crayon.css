@@ -74,3 +74,28 @@ h1,h2,h3,h4,.brand b,.house text,.station-label,.phase-controls button,.primary,
 .device-key strong{display:block;font-size:calc(13px * var(--text-scale,1.15))}
 .device-key small{display:block;font-size:calc(11px * var(--text-scale,1.15));line-height:1.75;color:var(--ink-soft)}
 .device-key b{border-color:#e8504a;color:#c43d35}
+/* 手術室示意圖：可點的數字與說明小視窗 */
+.room-illustration{position:relative}
+.room-callouts .callout{cursor:pointer;outline:none}
+.room-callouts .callout-hit{fill:transparent;stroke:none}
+.room-callouts .callout:hover .callout-dot,.room-callouts .callout:focus-visible .callout-dot,.room-callouts .callout.active .callout-dot{fill:#e8504a}
+.room-callouts .callout:hover text,.room-callouts .callout:focus-visible text,.room-callouts .callout.active text{fill:#fff}
+.device-tap-hint{margin:8px 2px 0;font-size:calc(12px * var(--text-scale,1.15))!important;color:#5b7b6b}
+.device-tip{position:absolute;z-index:5;width:min(300px,calc(100% - 16px));background:#fffef8;border:2px solid #e8504a;border-radius:14px;padding:14px 44px 14px 16px;box-shadow:0 10px 28px #244c4333;text-align:left}
+.device-tip strong{display:flex;align-items:center;gap:8px;font-size:calc(14px * var(--text-scale,1.15));line-height:1.6;color:#203f43}
+.device-tip strong b{width:24px;height:24px;border-radius:50%;background:#e8504a;color:#fff;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.device-tip p{margin:6px 0 0;font-size:calc(12px * var(--text-scale,1.15));line-height:1.8;color:#3e5a55}
+.device-tip-close{position:absolute;top:8px;right:8px;width:32px;height:32px;border:1px solid #d0d9ce;border-radius:50%;background:#fff;font-size:20px;line-height:1;padding:0;color:#4a6660}
+.device-tip-close:hover{background:#f6ece8}
+/* 六站完成的結尾視窗 */
+#farewell-dialog{width:min(520px,calc(100vw - 28px));max-height:calc(100svh - 28px);padding:0;border:1px solid #d2e2d7;border-radius:24px;background:#fbfcf4;box-shadow:0 25px 80px #244c4344}
+#farewell-dialog::backdrop{background:#2a4e48b0;backdrop-filter:blur(5px)}
+.farewell-body{padding:26px 28px 28px;text-align:center}
+.farewell-body h2{margin:6px 0 14px;font-size:calc(22px * var(--text-scale,1.15));color:#2f5d4f}
+.farewell-team{display:flex;justify-content:center;gap:26px}
+.farewell-team figure{margin:0}.farewell-team svg{width:96px;height:106px;display:block;margin:0 auto}
+.farewell-team figcaption{font-size:calc(12px * var(--text-scale,1.15));font-weight:700;color:#385b50;margin-top:4px}
+.farewell-say{position:relative;margin:18px auto 12px;padding:14px 18px;background:#fff;border:2px solid #a6c4ad;border-radius:16px;font-size:calc(16px * var(--text-scale,1.15));font-weight:700;line-height:1.7;color:#2f5d4f}
+.farewell-say::before{content:'';position:absolute;top:-11px;left:50%;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom:11px solid #a6c4ad}
+.farewell-text{font-size:calc(13px * var(--text-scale,1.15));line-height:1.95;color:#3e5a55;margin:0 0 18px;text-align:left}
+.farewell-body .primary{max-width:280px;margin:0 auto}
