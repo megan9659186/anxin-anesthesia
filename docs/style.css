@@ -49,3 +49,16 @@ body{background:#f7f7e9}.intro .eyebrow{color:#bf7959}.intro h1{color:#285e59}.m
 /* 長按示意圖時不要選取文字、跳出選單或拖動圖片 */
 .room-illustration,.team-ribbon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .room-illustration svg,.team-card svg{-webkit-user-drag:none}
+/* 放大看圖 */
+.scene-zoom-btn{display:block;margin:10px auto 0;min-height:44px;padding:8px 18px;border:2px solid #d9cdea;border-radius:22px;background:#fff;color:#4a3b5c;font-size:calc(14px * var(--text-scale,1.15));font-weight:700;cursor:pointer}
+.room-illustration{cursor:zoom-in}
+#scene-zoom{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;background:#fffcf3;display:flex;flex-direction:column;overflow:hidden}
+#scene-zoom:not([open]){display:none}
+#scene-zoom::backdrop{background:#203f4399}
+.scene-zoom-bar{display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top)) 10px 8px;background:#fff;border-bottom:1px solid #e3dccb;flex-shrink:0}
+.scene-zoom-bar button{width:44px;height:44px;flex-shrink:0;border:2px solid #d9cdea;border-radius:50%;background:#fff;font-size:22px;line-height:1;padding:0;color:#4a3b5c;cursor:pointer}
+.scene-zoom-bar button:disabled{opacity:.35}
+.scene-zoom-bar .hint{flex:1;margin:0;font-size:calc(12px * var(--text-scale,1.15));line-height:1.5;color:#5f7a72}
+.scene-zoom-bar .scene-zoom-close{border-color:#f2c4cc;color:#c43d35;font-size:26px}
+#scene-zoom .scene-zoom-stage{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;border:0;border-radius:0;cursor:grab;display:flex}
+#scene-zoom .scene-zoom-stage>svg{display:block;flex-shrink:0;max-width:none;min-width:0;border:0;border-radius:0;margin:auto}
