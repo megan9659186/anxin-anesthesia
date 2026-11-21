@@ -13,7 +13,12 @@ const LEARN_CARDS={
  ['醒來後喉嚨卡卡的，正常嗎？','蠻常見的','我不太確定','麻醉時可能會放呼吸管路幫忙呼吸，醒來後喉嚨有點乾或卡卡的很常見，通常會慢慢改善。'],
  ['假牙、隱形眼鏡和首飾，手術前要拿下來嗎？','要，先拿下來比較安全','戴著應該沒關係','先拿下來，可以避免麻醉時掉落、卡住或造成受傷。'],
  ['睡覺會打鼾，也要告訴麻醉團隊嗎？','要，可以讓團隊先準備','這個應該不重要','打鼾或睡覺時呼吸停頓，能幫助團隊評估你的呼吸道，事先做好準備。'],
- ['手術前戒菸，有幫助嗎？','有，對呼吸和傷口都好','好像沒什麼差別','戒菸可以讓呼吸道比較不敏感，也有助傷口癒合，越早開始越好。']],
+ ['手術前戒菸，有幫助嗎？','有，對呼吸和傷口都好','好像沒什麼差別','戒菸可以讓呼吸道比較不敏感，也有助傷口癒合，越早開始越好。'],
+ ['手術前，指甲油和光療指甲要卸掉嗎？','要，先卸掉比較好','漂亮又不影響，留著就好','手指上的血氧夾是透過指甲測量血液中的氧氣，指甲油或光療指甲可能讓數值不準。手術前請先卸除。'],
+ ['檳榔只嚼不吞，手術前可以吃嗎？','只嚼不吞，應該沒關係','不行，檳榔也算食物','檳榔也算食物。就算沒有吞下去，嚼檳榔也會讓口水和胃液變多，麻醉時可能嗆進肺部。手術前請和食物一樣遵守空腹時間。'],
+ ['以前全身麻醉後有不舒服，要主動說嗎？','要，主動告訴麻醉團隊','都過去了，應該不用說','像是麻醉後嚴重噁心嘔吐、很久才醒、插管困難、對藥物過敏，或家人曾在麻醉時發高燒（惡性高熱），都請主動告訴麻醉團隊，讓團隊提早準備。'],
+ ['正在打「瘦瘦針」，手術前要停嗎？','不用，跟麻醉沒關係','要，手術前一週先停打','瘦瘦針（GLP-1 類藥物）會讓胃排空變慢，就算有空腹，胃裡可能還有食物，麻醉時容易嗆到。每週打一次的瘦瘦針，手術前一週先不要打；請告訴團隊藥名和最後一次施打的日期。'],
+ ['吃 SGLT-2 抑制劑的糖尿病藥，手術前要停嗎？','要，手術前三天停藥','血糖藥不能停，照常吃','這類藥（英文藥名常以 gliflozin 結尾，例如福適佳、恩排糖）在手術前後可能引起酮酸中毒，通常要在手術前三天停藥。停藥日期請和醫師確認，其他血糖藥也依醫師指示調整。']],
 en:[
  ['Is anesthesia the same as ordinary sleep?','Yes, just like sleep','Probably not quite','Anesthesia is different from natural sleep. Your team looks after pain, awareness and your body; some types of anesthesia do not need you to be fully asleep.'],
  ['Why do I need to fast before surgery?','To make anesthesia safer','It is just a hospital rule','An empty stomach lowers the chance of stomach contents getting into the lungs during anesthesia. Start fasting at the time your care team gives you.'],
@@ -24,7 +29,12 @@ en:[
  ['Is a scratchy throat after waking up normal?','It is quite common','I am not sure','A breathing tube may be used during anesthesia. A dry or scratchy throat afterwards is common and usually settles.'],
  ['Should I remove dentures, contact lenses and jewellery before surgery?','Yes, it is safer','Keeping them on is fine','Removing them first prevents them falling out, getting stuck or causing injury during anesthesia.'],
  ['Should I tell the anesthesia team that I snore?','Yes, so they can prepare','It does not really matter','Snoring or pauses in breathing during sleep help the team assess your airway and prepare in advance.'],
- ['Does stopping smoking before surgery help?','Yes, for breathing and healing','Not much difference','Stopping smoking makes your airways less sensitive and helps wounds heal; the sooner the better.']],
+ ['Does stopping smoking before surgery help?','Yes, for breathing and healing','Not much difference','Stopping smoking makes your airways less sensitive and helps wounds heal; the sooner the better.'],
+ ['Should I remove nail polish and gel nails before surgery?','Yes, remove them first','They look nice, keep them','The oxygen clip on your finger reads through the nail. Nail polish or gel nails can make the reading inaccurate, so please remove them before surgery.'],
+ ['Can I chew betel nut before surgery if I don\'t swallow it?','Chewing only should be fine','No, betel nut counts as food','Betel nut counts as food. Even without swallowing, chewing increases saliva and stomach fluid, which could enter the lungs during anesthesia. Follow the same fasting time as for food.'],
+ ['Should I mention problems I had after a past general anesthetic?','Yes, tell the anesthesia team','It\'s in the past, no need','Severe nausea and vomiting, waking up slowly, a difficult breathing tube, drug allergies, or a family member who had a high fever during anesthesia (malignant hyperthermia): please tell the team so they can prepare early.'],
+ ['I use a weight-loss injection. Should I stop before surgery?','No, it\'s unrelated to anesthesia','Yes, skip it the week before surgery','Weight-loss injections (GLP-1 medicines) slow stomach emptying, so food may remain even after fasting and could be inhaled during anesthesia. For weekly injections, skip the dose in the week before surgery, and tell the team the medicine name and your last injection date.'],
+ ['I take an SGLT-2 inhibitor for diabetes. Should I stop it before surgery?','Yes, stop it 3 days before','Diabetes medicine must never stop','These medicines (names often end in -gliflozin) can cause ketoacidosis around surgery and are usually stopped 3 days before. Confirm the stop date with your doctor, and adjust other diabetes medicines as instructed.']],
 id:[
  ['Apakah anestesi sama dengan tidur biasa?','Ya, sama seperti tidur','Sepertinya tidak sama','Anestesi berbeda dari tidur alami. Tim menjaga nyeri, kesadaran, dan kondisi tubuhmu; beberapa jenis anestesi tidak membuatmu tertidur penuh.'],
  ['Mengapa harus puasa sebelum operasi?','Agar anestesi lebih aman','Hanya aturan rumah sakit','Lambung yang kosong mengurangi risiko isi lambung masuk ke paru-paru saat anestesi. Mulailah puasa sesuai waktu yang diberikan tim.'],
@@ -35,7 +45,12 @@ id:[
  ['Apakah wajar tenggorokan terasa gatal setelah bangun?','Cukup sering terjadi','Saya tidak yakin','Selang napas mungkin dipakai saat anestesi. Tenggorokan kering atau gatal setelahnya umum terjadi dan biasanya membaik.'],
  ['Perlukah melepas gigi palsu, lensa kontak, dan perhiasan sebelum operasi?','Ya, lebih aman','Tetap dipakai tidak apa-apa','Melepasnya dulu mencegahnya jatuh, tersangkut, atau menyebabkan cedera saat anestesi.'],
  ['Perlukah memberi tahu tim anestesi bahwa aku mendengkur?','Ya, agar tim bersiap','Sepertinya tidak penting','Mendengkur atau napas berhenti saat tidur membantu tim menilai jalan napas dan bersiap lebih awal.'],
- ['Apakah berhenti merokok sebelum operasi membantu?','Ya, untuk napas dan luka','Sepertinya tidak berbeda','Berhenti merokok membuat saluran napas kurang sensitif dan membantu luka sembuh; makin cepat makin baik.']],
+ ['Apakah berhenti merokok sebelum operasi membantu?','Ya, untuk napas dan luka','Sepertinya tidak berbeda','Berhenti merokok membuat saluran napas kurang sensitif dan membantu luka sembuh; makin cepat makin baik.'],
+ ['Apakah cat kuku dan kuku gel harus dihapus sebelum operasi?','Ya, sebaiknya dihapus','Cantik dan tidak berpengaruh, biarkan saja','Penjepit oksigen di jari mengukur melalui kuku. Cat kuku atau kuku gel bisa membuat hasilnya tidak akurat, jadi hapus sebelum operasi.'],
+ ['Bolehkah mengunyah pinang sebelum operasi kalau tidak ditelan?','Hanya dikunyah, mungkin tidak apa-apa','Tidak boleh, pinang termasuk makanan','Pinang termasuk makanan. Walau tidak ditelan, mengunyah pinang menambah air liur dan cairan lambung yang bisa masuk ke paru saat anestesi. Ikuti waktu puasa yang sama seperti makanan.'],
+ ['Perlukah memberi tahu masalah setelah bius total sebelumnya?','Ya, beri tahu tim anestesi','Sudah lewat, tidak perlu','Mual muntah berat, lama sadar, sulit dipasang selang napas, alergi obat, atau keluarga yang pernah demam tinggi saat anestesi (hipertermia maligna): beri tahu tim agar bisa bersiap lebih awal.'],
+ ['Saya memakai suntik pelangsing. Perlu dihentikan sebelum operasi?','Tidak, tidak ada hubungannya','Ya, hentikan seminggu sebelum operasi','Suntik pelangsing (obat GLP-1) memperlambat pengosongan lambung, sehingga makanan bisa tersisa walau sudah puasa dan bisa terhirup saat anestesi. Untuk suntikan mingguan, jangan suntik dalam seminggu sebelum operasi, dan beri tahu tim nama obat serta tanggal suntikan terakhir.'],
+ ['Saya minum obat diabetes SGLT-2. Perlu dihentikan sebelum operasi?','Ya, hentikan 3 hari sebelumnya','Obat diabetes tidak boleh dihentikan','Obat ini (namanya sering berakhiran -gliflozin) bisa menyebabkan ketoasidosis sekitar operasi dan biasanya dihentikan 3 hari sebelumnya. Pastikan tanggalnya dengan dokter, dan sesuaikan obat diabetes lain sesuai petunjuk.']],
 th:[
  ['การระงับความรู้สึกเหมือนการนอนหลับปกติไหม','ใช่ เหมือนนอนหลับ','น่าจะไม่เหมือน','การระงับความรู้สึกต่างจากการนอนหลับธรรมชาติ ทีมจะดูแลความปวด ระดับความรู้สึกตัว และร่างกายของคุณ บางวิธีไม่ต้องหลับสนิท'],
  ['ทำไมต้องงดน้ำงดอาหารก่อนผ่าตัด','เพื่อให้ปลอดภัยขึ้น','เป็นแค่กฎของโรงพยาบาล','กระเพาะที่ว่างช่วยลดโอกาสที่สิ่งในกระเพาะจะเข้าไปในปอดระหว่างระงับความรู้สึก โปรดเริ่มงดตามเวลาที่ทีมแจ้ง'],
@@ -46,7 +61,12 @@ th:[
  ['ตื่นมาแล้วระคายคอ เป็นเรื่องปกติไหม','พบได้บ่อย','ไม่แน่ใจ','อาจมีการใส่ท่อช่วยหายใจระหว่างระงับความรู้สึก อาการคอแห้งหรือระคายเคืองหลังตื่นพบได้บ่อยและมักค่อย ๆ ดีขึ้น'],
  ['ต้องถอดฟันปลอม คอนแทคเลนส์ และเครื่องประดับก่อนผ่าตัดไหม','ต้อง ปลอดภัยกว่า','ใส่ไว้ก็ได้','การถอดออกก่อนช่วยป้องกันการหลุด ติดค้าง หรือบาดเจ็บระหว่างระงับความรู้สึก'],
  ['ถ้านอนกรน ควรบอกทีมวิสัญญีไหม','ควร ทีมจะได้เตรียมพร้อม','น่าจะไม่สำคัญ','การนอนกรนหรือหยุดหายใจขณะหลับช่วยให้ทีมประเมินทางเดินหายใจและเตรียมพร้อมล่วงหน้า'],
- ['เลิกบุหรี่ก่อนผ่าตัดช่วยไหม','ช่วย ทั้งการหายใจและแผล','ไม่ค่อยต่างกัน','การเลิกบุหรี่ทำให้ทางเดินหายใจไวน้อยลงและช่วยให้แผลหาย ยิ่งเลิกเร็วยิ่งดี']],
+ ['เลิกบุหรี่ก่อนผ่าตัดช่วยไหม','ช่วย ทั้งการหายใจและแผล','ไม่ค่อยต่างกัน','การเลิกบุหรี่ทำให้ทางเดินหายใจไวน้อยลงและช่วยให้แผลหาย ยิ่งเลิกเร็วยิ่งดี'],
+ ['ก่อนผ่าตัดต้องล้างยาทาเล็บและเล็บเจลออกไหม','ต้อง ล้างออกก่อนดีกว่า','สวยดีและไม่มีผล เก็บไว้ได้','ที่หนีบวัดออกซิเจนที่นิ้ววัดผ่านเล็บ ยาทาเล็บหรือเล็บเจลอาจทำให้ค่าไม่แม่นยำ กรุณาล้างออกก่อนผ่าตัด'],
+ ['เคี้ยวหมากโดยไม่กลืน ก่อนผ่าตัดได้ไหม','แค่เคี้ยวไม่กลืน น่าจะไม่เป็นไร','ไม่ได้ หมากก็นับเป็นอาหาร','หมากนับเป็นอาหาร แม้ไม่กลืน การเคี้ยวหมากทำให้น้ำลายและน้ำย่อยเพิ่มขึ้น อาจสำลักเข้าปอดระหว่างดมยา กรุณางดเหมือนงดอาหาร'],
+ ['เคยมีปัญหาหลังดมยาสลบ ต้องบอกทีมไหม','ต้อง บอกทีมวิสัญญีเอง','ผ่านไปแล้ว ไม่ต้องบอก','เช่น คลื่นไส้อาเจียนรุนแรง ตื่นช้า ใส่ท่อช่วยหายใจยาก แพ้ยา หรือคนในครอบครัวเคยไข้สูงระหว่างดมยา (ภาวะไข้สูงอย่างร้าย) กรุณาบอกทีมเพื่อเตรียมตัวล่วงหน้า'],
+ ['ฉีดยาลดน้ำหนักอยู่ ต้องหยุดก่อนผ่าตัดไหม','ไม่ต้อง ไม่เกี่ยวกับการดมยา','ต้อง หยุดฉีดหนึ่งสัปดาห์ก่อนผ่าตัด','ยาฉีดลดน้ำหนัก (กลุ่ม GLP-1) ทำให้กระเพาะว่างช้า แม้งดอาหารแล้วอาจยังมีอาหารค้าง และสำลักได้ระหว่างดมยา ถ้าฉีดสัปดาห์ละครั้ง ให้งดฉีดในสัปดาห์ก่อนผ่าตัด และแจ้งชื่อยากับวันที่ฉีดครั้งล่าสุด'],
+ ['กินยาเบาหวานกลุ่ม SGLT-2 ต้องหยุดก่อนผ่าตัดไหม','ต้อง หยุดยา 3 วันก่อนผ่าตัด','ยาเบาหวานห้ามหยุด กินตามปกติ','ยากลุ่มนี้ (ชื่อยามักลงท้ายด้วย -gliflozin) อาจทำให้เกิดภาวะเลือดเป็นกรดจากคีโตนช่วงผ่าตัด โดยทั่วไปหยุด 3 วันก่อนผ่าตัด กรุณายืนยันวันหยุดยากับแพทย์ และปรับยาเบาหวานอื่นตามคำแนะนำ']],
 vi:[
  ['Gây mê có giống giấc ngủ bình thường không?','Có, giống như ngủ','Chắc là không giống','Gây mê khác với giấc ngủ tự nhiên. Đội ngũ chăm sóc cơn đau, mức tỉnh và cơ thể bạn; một số cách gây mê không cần ngủ hoàn toàn.'],
  ['Vì sao phải nhịn ăn trước khi mổ?','Để gây mê an toàn hơn','Chỉ là quy định của bệnh viện','Dạ dày rỗng giúp giảm nguy cơ thức ăn tràn vào phổi khi gây mê. Hãy bắt đầu nhịn ăn theo giờ nhóm chăm sóc dặn.'],
@@ -57,7 +77,12 @@ vi:[
  ['Tỉnh dậy thấy cổ họng vướng có bình thường không?','Khá thường gặp','Tôi không chắc','Có thể dùng ống thở khi gây mê. Cổ họng khô hoặc vướng sau đó khá thường gặp và thường đỡ dần.'],
  ['Có cần tháo răng giả, kính áp tròng và trang sức trước khi mổ không?','Có, như vậy an toàn hơn','Đeo cũng không sao','Tháo ra trước giúp tránh rơi, mắc kẹt hoặc gây tổn thương khi gây mê.'],
  ['Có nên báo cho nhóm gây mê là tôi ngáy không?','Có, để nhóm chuẩn bị','Chắc không quan trọng','Ngáy hoặc ngừng thở khi ngủ giúp nhóm đánh giá đường thở và chuẩn bị trước.'],
- ['Bỏ thuốc lá trước mổ có giúp ích không?','Có, cho hô hấp và vết thương','Không khác mấy','Bỏ thuốc lá giúp đường thở bớt nhạy cảm và vết thương lành tốt hơn; càng sớm càng tốt.']],
+ ['Bỏ thuốc lá trước mổ có giúp ích không?','Có, cho hô hấp và vết thương','Không khác mấy','Bỏ thuốc lá giúp đường thở bớt nhạy cảm và vết thương lành tốt hơn; càng sớm càng tốt.'],
+ ['Có cần tẩy sơn móng và móng gel trước mổ không?','Có, nên tẩy trước','Đẹp và không ảnh hưởng, cứ để','Kẹp đo oxy ở ngón tay đo qua móng. Sơn móng hoặc móng gel có thể làm kết quả không chính xác, vì vậy hãy tẩy trước khi mổ.'],
+ ['Nhai trầu không nuốt thì trước mổ có được không?','Chỉ nhai không nuốt, chắc không sao','Không được, trầu cũng tính là thức ăn','Trầu cau cũng tính là thức ăn. Dù không nuốt, nhai trầu làm tăng nước bọt và dịch dạ dày, có thể sặc vào phổi khi gây mê. Hãy nhịn như nhịn ăn.'],
+ ['Từng gặp vấn đề sau gây mê toàn thân, có cần chủ động nói không?','Có, chủ động báo nhóm gây mê','Chuyện cũ rồi, không cần','Ví dụ buồn nôn nôn nặng, tỉnh chậm, khó đặt ống thở, dị ứng thuốc, hoặc người nhà từng sốt cao khi gây mê (tăng thân nhiệt ác tính): hãy báo để nhóm chuẩn bị sớm.'],
+ ['Tôi đang tiêm thuốc giảm cân. Có cần ngưng trước mổ không?','Không, không liên quan gây mê','Có, ngưng tiêm một tuần trước mổ','Thuốc tiêm giảm cân (nhóm GLP-1) làm dạ dày tiêu chậm, dù đã nhịn ăn vẫn có thể còn thức ăn và dễ sặc khi gây mê. Nếu tiêm mỗi tuần một lần, hãy bỏ mũi tiêm trong tuần trước mổ và báo tên thuốc cùng ngày tiêm gần nhất.'],
+ ['Tôi uống thuốc tiểu đường nhóm SGLT-2. Có cần ngưng trước mổ không?','Có, ngưng 3 ngày trước mổ','Thuốc tiểu đường không được ngưng','Nhóm thuốc này (tên thường tận cùng bằng -gliflozin) có thể gây nhiễm toan ceton quanh thời gian mổ, thường ngưng 3 ngày trước mổ. Hãy xác nhận ngày ngưng với bác sĩ và điều chỉnh thuốc tiểu đường khác theo hướng dẫn.']],
 fil:[
  ['Ang anesthesia ba ay katulad ng karaniwang pagtulog?','Oo, parang tulog lang','Mukhang hindi pareho','Iba ang anesthesia sa natural na pagtulog. Inaalagaan ng team ang sakit, kamalayan at katawan mo; may uri ng anesthesia na hindi kailangang tuluyang makatulog.'],
  ['Bakit kailangang mag-ayuno bago ang operasyon?','Para mas ligtas ang anesthesia','Patakaran lang ng ospital','Mas mababa ang panganib na pumasok sa baga ang laman ng tiyan kapag walang laman ang tiyan. Magsimulang mag-ayuno sa oras na sinabi ng team.'],
@@ -68,15 +93,24 @@ fil:[
  ['Normal ba ang makating lalamunan paggising?','Karaniwan ito','Hindi ako sigurado','Maaaring gumamit ng breathing tube habang may anesthesia. Karaniwan ang tuyo o makating lalamunan pagkatapos at kadalasang gumagaling.'],
  ['Dapat bang tanggalin ang pustiso, contact lens at alahas bago ang operasyon?','Oo, mas ligtas','Ayos lang kung suot','Ang pagtanggal muna ay pumipigil na mahulog, maipit o makasakit ang mga ito habang may anesthesia.'],
  ['Dapat ko bang sabihin sa anesthesia team na humihilik ako?','Oo, para makapaghanda sila','Mukhang hindi mahalaga','Ang paghilik o paghinto ng paghinga habang tulog ay tumutulong sa team na suriin ang daanan ng hangin at maghanda nang maaga.'],
- ['Nakakatulong ba ang pagtigil sa paninigarilyo bago ang operasyon?','Oo, sa paghinga at sugat','Halos walang pagkakaiba','Nagiging mas hindi sensitibo ang daanan ng hangin at mas mabilis gumaling ang sugat; mas maaga, mas mabuti.']]};
+ ['Nakakatulong ba ang pagtigil sa paninigarilyo bago ang operasyon?','Oo, sa paghinga at sugat','Halos walang pagkakaiba','Nagiging mas hindi sensitibo ang daanan ng hangin at mas mabilis gumaling ang sugat; mas maaga, mas mabuti.'],
+ ['Dapat bang tanggalin ang nail polish at gel nails bago ang operasyon?','Oo, tanggalin muna','Maganda naman at walang epekto, iwan na lang','Sumusukat sa kuko ang oxygen clip sa daliri. Puwedeng hindi tumpak ang reading dahil sa nail polish o gel nails, kaya tanggalin bago ang operasyon.'],
+ ['Puwede bang ngumuya ng nganga bago ang operasyon kung hindi lulunukin?','Nguya lang, siguro ayos lang','Hindi, pagkain din ang nganga','Pagkain din ang nganga. Kahit hindi lunukin, dumarami ang laway at asido sa tiyan na puwedeng mapunta sa baga habang naka-anesthesia. Sundin ang parehong oras ng pag-aayuno gaya ng pagkain.'],
+ ['Dapat ko bang sabihin ang naging problema pagkatapos ng dating general anesthesia?','Oo, sabihin sa anesthesia team','Tapos na iyon, hindi na kailangan','Matinding pagsusuka, matagal magising, nahirapang lagyan ng tubo sa paghinga, allergy sa gamot, o kapamilyang nilagnat nang mataas habang naka-anesthesia (malignant hyperthermia): sabihin para makapaghanda ang team.'],
+ ['Gumagamit ako ng pampapayat na injection. Dapat bang itigil bago ang operasyon?','Hindi, walang kinalaman sa anesthesia','Oo, itigil isang linggo bago ang operasyon','Pinababagal ng pampapayat na injection (GLP-1) ang pag-alis ng pagkain sa tiyan, kaya puwedeng may matira kahit nag-ayuno at malanghap habang naka-anesthesia. Kung lingguhan ang injection, laktawan ito sa linggo bago ang operasyon at sabihin ang pangalan ng gamot at huling petsa ng injection.'],
+ ['Umiinom ako ng SGLT-2 na gamot sa diabetes. Dapat bang itigil bago ang operasyon?','Oo, itigil 3 araw bago','Hindi puwedeng itigil ang gamot sa diabetes','Ang mga gamot na ito (madalas nagtatapos sa -gliflozin ang pangalan) ay puwedeng magdulot ng ketoacidosis sa paligid ng operasyon at karaniwang itinitigil 3 araw bago. Kumpirmahin ang petsa sa doktor at ayusin ang ibang gamot sa diabetes ayon sa payo.']]};
 const LEARN_UI={'zh-Hant':['選一個想法，一起認識麻醉。','💡 一起認識：','下一個小知識 →'],en:['Pick a thought and learn together.','💡 Good to know: ','Next tip →'],id:['Pilih satu pendapat dan belajar bersama.','💡 Perlu diketahui: ','Info berikutnya →'],th:['เลือกความคิดหนึ่งข้อ แล้วมาเรียนรู้ด้วยกัน','💡 มาทำความรู้จัก: ','เกร็ดความรู้ถัดไป →'],vi:['Chọn một suy nghĩ và cùng tìm hiểu.','💡 Cùng tìm hiểu: ','Mẹo tiếp theo →'],fil:['Pumili ng isang palagay at sabay tayong matuto.','💡 Alamin natin: ','Susunod na kaalaman →']};
+// 每題正確答案是第幾個選項（0＝左邊、1＝右邊），六種語言順序相同。
+const LEARN_CORRECT=[1,0,0,0,0,0,0,0,0,0,0,1,0,1,0];
 let learnIndex=0,learnChoice=null;
 function nextLearn(){learnIndex=(learnIndex+1)%LEARN_CARDS['zh-Hant'].length;learnChoice=null;renderQuiz();}
 // 取代 app.js 原本只有一題的 renderQuiz（updateLanguage 會呼叫它）；外觀維持原本的樣子。
 renderQuiz=function(){const cards=LEARN_CARDS[language]||LEARN_CARDS['zh-Hant'],ui=LEARN_UI[language]||LEARN_UI['zh-Hant'],[question,first,second,explain]=cards[learnIndex];
  document.querySelector('.quiz h2').textContent=question;$('#quiz-yes').textContent=first;$('#quiz-no').textContent=second;
  $('#quiz-yes').setAttribute('aria-pressed',String(learnChoice===0));$('#quiz-no').setAttribute('aria-pressed',String(learnChoice===1));
- let next=$('#quiz-next');if(!next){next=document.createElement('button');next.id='quiz-next';next.type='button';next.className='learn-next';next.onclick=()=>{nextLearn();restartLearnTimer()};$('#quiz-feedback').after(next);}
+ let next=$('#quiz-next');if(!next){next=document.createElement('button');next.id='quiz-next';next.type='button';next.className='learn-next';next.onclick=()=>{nextLearn();restartLearnTimer();const q=document.querySelector('.quiz');if(q&&q.getBoundingClientRect().top<0)q.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})};$('#quiz-feedback').after(next);}
+ // 作答後：正確答案換成綠色並讓外框閃爍；選錯的那個變淡。
+ const right=LEARN_CORRECT[learnIndex]??0;[$('#quiz-yes'),$('#quiz-no')].forEach((b,i)=>{b.classList.toggle('is-correct',learnChoice!==null&&i===right);b.classList.toggle('is-wrong',learnChoice!==null&&i===learnChoice&&i!==right)});
  next.textContent=ui[2];$('#quiz-feedback').textContent=learnChoice===null?ui[0]:ui[1]+explain;};
 $('#quiz-yes').onclick=()=>{learnChoice=0;renderQuiz()};$('#quiz-no').onclick=()=>{learnChoice=1;renderQuiz()};
 let learnTimer=null;function restartLearnTimer(){clearInterval(learnTimer);learnTimer=setInterval(nextLearn,5*60*1000);}
