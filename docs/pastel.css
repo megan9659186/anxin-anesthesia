@@ -121,15 +121,12 @@ dialog::backdrop{background:#7a5e8a55;backdrop-filter:blur(6px)}
 @keyframes zz{0%,100%{opacity:.3;translate:0 0}50%{opacity:1;translate:3px -4px}}
 @media(prefers-reduced-motion:reduce){.transfer-zz{animation:none}}
 
-/* 「點這裡」引導、抵達時的彩色紙花、直式提示視窗 */
+/* 「點這裡」引導、直式提示視窗 */
 .guide-bubble{fill:#fff;stroke:var(--pink-deep);filter:drop-shadow(0 4px 7px #c97b9830)}
 .preop-guide text{fill:#d0628a}
 .guide-arrow path{fill:var(--pink-deep);stroke:#fff}
 .guide-target{stroke:var(--pink-deep)}
 .preop-guide:focus-visible .guide-bubble{stroke:var(--ink)}
-.arrival-sparkles i{color:#f39bb8}
-.arrival-sparkles i:nth-child(3n){color:#b9a3e6}
-.arrival-sparkles i:nth-child(3n+1){color:#8fd3b9}
 #rotate-dialog{background:var(--paper);border:3px solid var(--pink-pale)}
 #rotate-dialog::backdrop{background:#7a5e8a99}
 .rotate-phone{border-color:var(--lav-deep);background:#f1ecff}
